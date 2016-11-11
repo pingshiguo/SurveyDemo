@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-bar-nav {
+				background-color: #D63443;
+			}
+			
+			.mui-title {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav:active {
+				color: #FFFFFF;
+			}
+			
+			.header-content {
+				margin: 30px 20px 0px;
+				text-align: center;
+			}
+			
+			.header-content p {
+				color: #000000;
+				font-size: 18px;
+				margin-bottom: 0px;
+			}
+			
+			.code-content {
+				margin: 20px;
+				text-align: center;
+			}
+			
+			.code-content img {
+				width: 65%;
+				height: 65%;
+			}
+			
+			.tips {
+				margin: 0px 20px;
+				background-color: #f4f4f4;
+				text-align: center;
+				padding: 10px !important;
+			}
+			
+			.tips p {
+				color: #000000;
+				font-size: 16px;
+				margin-bottom: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">扫码关注</h1>
+		</header>
+		<div id="content" class="mui-content">
+			<div class="mui-content-padded">
+				<div class="header-content">
+					<p>扫一扫关注经济日报公众号</p>
+				</div>
+				<div class="code-content">
+					<img src="images/code_icon.png" />
+				</div>
+				<div class="tips">
+					<p>感谢您参与此次调查，请向工作人员领取奖品！</p>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+				plus.storage.setItem('scanState','true');
+			});
+		</script>
+	</body>
+
+</html>

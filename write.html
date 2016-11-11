@@ -1,0 +1,393 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-bar-nav {
+				background-color: #D63443;
+			}
+			
+			.mui-title {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav:active {
+				color: #FFFFFF;
+			}
+			
+			.mui-input-group:before,
+			.mui-input-group:after,
+			.mui-input-row:after {
+				height: 0px !important;
+			}
+			
+			.mui-input-group {
+				margin-top: 40px;
+			}
+			
+			.mui-input-row {
+				margin: 20px 20px;
+				background-color: #FFFFFF;
+				border: 1px solid #EEEEEE;
+				border-radius: 25px;
+			}
+			
+			.mui-input-row:last-child {
+				margin-bottom: 20px;
+			}
+			
+			.mui-input-row label {
+				width: 20% !important;
+			}
+			
+			.mui-input-row label~input {
+				width: 80% !important;
+			}
+			
+			.mui-input-row label img {
+				width: 15px;
+				height: 15px;
+			}
+			
+			.tips {
+				margin: 0px 20px;
+			}
+			
+			.tips p {
+				color: #616060;
+				margin-bottom: 0px;
+			}
+			
+			.mui-button-row {
+				margin: 20px;
+				padding: 0px;
+			}
+			
+			.btn {
+				padding: 8px 0px;
+				background-color: #F54C4C;
+				color: #FFFFFF;
+				border-radius: 25px;
+				border: 1px solid #F54C4C;
+				margin-bottom: 20px !important;
+			}
+			
+			.btn:active {
+				background-color: #D63443 !important;
+				border: 1px solid #D63443 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">填写问卷</h1>
+		</header>
+		<div id="content" class="mui-content">
+			<div class="mui-content-padded">
+				<div class="mui-input-group">
+					<div class="mui-input-row">
+						<label><img src="images/login_user_icon.png" /></label>
+						<input type="text" id="name" class="mui-input-clear" placeholder="户主姓名" />
+					</div>
+					<div class="mui-input-row">
+						<label><img src="images/mobile_icon.png"/></label>
+						<input type="text" id="mobile" class="mui-input-clear" placeholder="联系电话" />
+					</div>
+					<div class="mui-input-row">
+						<label><img src="images/login_locked_icon.png" /></label>
+						<input id="select" type="text" placeholder="选择样本" readonly="readonly" />
+					</div>
+				</div>
+				<div class="tips">
+					<p id="timeInfo">填写信息后点击开始答题</p>
+				</div>
+				<div class="mui-button-row">
+					<button id="startAnswer-btn" class="mui-btn mui-btn-red mui-btn-block btn">开始答题</button>
+					<button id="photograph-btn" class="mui-btn mui-btn-red mui-btn-block btn">拍照留影</button>
+					<button id="scanCode-btn" class="mui-btn mui-btn-red mui-btn-block btn">扫码关注</button>
+					<button id="endAnswer-btn" class="mui-btn mui-btn-red mui-btn-block btn">结束调查</button>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var timeInfo = null;
+			var timeId = null;
+			var r = null;
+			var s = 0,
+				m = 0,
+				h = 0;
+			var addresses = null;
+			var startTime = null,
+				endTime = null;
+			var sampleId = null;
+			var recordURL = "";
+			var heyingURL = "";
+			var count = 0;
+			mui.plusReady(function() {
+				plus.geolocation.getCurrentPosition(getPosition, errorCB, {});
+				timeInfo = document.getElementById("timeInfo");
+				document.getElementById("select").addEventListener('tap', function() {
+					var targetWebview = plus.webview.create('selectTask.html', 'selectTask', {
+						scrollIndicator: 'none',
+						scalable: false
+					}, {
+						surveyId: mui.currentWebview.surveyId
+					});
+
+					targetWebview.addEventListener('loaded', function() {
+						targetWebview.show('pop-in');
+					}, false);
+				});
+
+				document.getElementById("startAnswer-btn").addEventListener('tap', function() {
+					switch(this.innerText) {
+						case '开始答题':
+							var d = new Date();
+							startTime = d.getFullYear() + "-" + d.getMonth() + '-' + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+							startAnswer(this);
+							break;
+						case '暂停答题':
+							stopAnswer(this);
+							break;
+						case '继续答题':
+							startAnswer(this);
+							break;
+					}
+				});
+
+				document.getElementById('photograph-btn').addEventListener('tap', function() {
+					if(r != null) {
+						stopAnswer(document.getElementById("startAnswer-btn"));
+					}
+					var targetWebview = plus.webview.create('photograph.html', 'photograph', {
+						scrollIndicator: 'none',
+						scalable: false
+					});
+
+					targetWebview.addEventListener('loaded', function() {
+						targetWebview.show('pop-in');
+					}, false);
+				});
+
+				document.getElementById('scanCode-btn').addEventListener('tap', function() {
+					if(r != null) {
+						stopAnswer(document.getElementById("startAnswer-btn"));
+					}
+					var targetWebview = plus.webview.create('scan-code.html', 'scan-code', {
+						scrollIndicator: 'none',
+						scalable: false
+					});
+
+					targetWebview.addEventListener('loaded', function() {
+						targetWebview.show('pop-in');
+					}, false);
+				});
+
+				document.getElementById('endAnswer-btn').addEventListener('tap', function() {
+					if(document.getElementById("name").value !== "") {
+						if(document.getElementById("mobile").value != "") {
+							if(document.getElementById("select").value != "") {
+								if(plus.storage.getItem('recordState')) {
+									if(plus.storage.getItem('imgState1')) {
+										if(plus.storage.getItem('scanState')) {
+											mui.confirm("确认提交吗？", "提示信息", ["确认", "取消"], function(event) {
+												if(event.index == 0) {
+													var d = new Date();
+													endTime = d.getFullYear() + "-" + d.getMonth() + '-' + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
+													//alert(mui.currentWebview.surveyId + " " + document.getElementById("name").value + ' ' + document.getElementById("mobile").value + " " + document.getElementById("select").value + " " + sampleId + " " + startTime + " " + endTime + " " + addresses);
+													//													var json_ = {
+													//														'surveyId': plus.webview.currentWebview().surveyId,
+													//														'realName': document.getElementById("name").value,
+													//														'phoneNum': document.getElementById("mobile").value,
+													//														'residentCode': document.getElementById("select").value,
+													//														'sampleId': sampleId,
+													//														'startTime': startTime,
+													//														'endTime': endTime,
+													//														'phoneLocation': addresses
+													//													};
+
+													mui.ajax('http://139.196.196.64:8080/edsm/service/submitSurveyUser', {
+														type: 'post',
+														dataType: "json",
+														headers: {
+															token: plus.storage.getItem('token')
+														},
+														data: {
+															'surveyId': plus.webview.currentWebview().surveyId,
+															'realName': document.getElementById("name").value,
+															'phoneNum': document.getElementById("mobile").value,
+															'residentCode': document.getElementById("select").value,
+															'sampleId': sampleId,
+															'startTime': startTime,
+															'endTime': endTime,
+															'phoneLocation': addresses
+														},
+														success: function(data) {
+															if(data.result == 1) {
+																plus.nativeUI.toast(data.msg);
+																var targetWebview = plus.webview.getWebviewById('survey');
+																targetWebview.show('pop-in', 200);
+																mui.fire(targetWebview, 'addInfo', {
+																	'surveyId': plus.webview.currentWebview().surveyId,
+																	'answerId': data.answerId,
+																	'startTime': startTime,
+																	'endTime': endTime,
+																	'huzhuxingming': document.getElementById("name").value,
+																	'shoujihao': document.getElementById("mobile").value,
+																	'addresses': addresses,
+																	'recordURL': recordURL,
+																	'heyingURL': heyingURL
+																});
+																setTimeout(function() {
+																	plus.webview.currentWebview().close('auto');
+																}, 350);
+
+															} else {
+																plus.nativeUI.toast(data.msg);
+															}
+														},
+														error: function(xhr, type, errorThrown) {
+															plus.nativeUI.toast(type);
+														}
+													});
+												}
+											});
+										} else {
+											plus.nativeUI.toast('没有扫码');
+										}
+									} else {
+										plus.nativeUI.toast('没有合影');
+									}
+								} else {
+									plus.nativeUI.toast('没有录音');
+								}
+							} else {
+								plus.nativeUI.toast('请选择样本');
+							}
+						} else {
+							plus.nativeUI.toast('请输入联系电话');
+						}
+					} else {
+						plus.nativeUI.toast('请输入户主姓名');
+					}
+				});
+			});
+
+			window.addEventListener('selectSample', function(event) {
+				document.getElementById("select").value = event.detail.residentCode;
+				sampleId = event.detail.sampleId;
+				plus.webview.getWebviewById('selectSample').close('auto');
+				plus.webview.getWebviewById('selectSample-suppage').close('auto');
+				plus.webview.getWebviewById('selectTask').close('auto');
+				plus.webview.getWebviewById('selectTask-suppage').close('auto');
+			}, false);
+
+			window.addEventListener('getheyingURL', function(event) {
+				heyingURL = event.detail.heyingURL;
+			}, false);
+
+			function onStateChanged(upload, status) {
+				console.log(upload.uploadedSize); // 已上传的字节数
+				w.setTitle("上传中，请等待...\n" + Math.floor((upload.uploadedSize / upload.totalSize) * 100) + "%");
+				if(upload.uploadedSize == upload.totalSize) {
+					w.close();
+				}
+			}
+
+			function Timing() {
+				if(h > 0) {
+					timeInfo.innerHTML = "正在答题,已经进行" + h + "时" + m + "分" + s + "秒";
+				} else if(m > 0) {
+					timeInfo.innerHTML = "正在答题,已经进行" + m + "分" + s + "秒";
+				} else {
+					timeInfo.innerHTML = "正在答题,已经进行" + s + "秒";
+				}
+				s++;
+				if(s > 59) {
+					m += 1;
+					s = 0;
+				}
+				if(m > 59) {
+					h += 1;
+					m = 0;
+				}
+				timeId = setTimeout(Timing, 1000);
+			}
+
+			function startAnswer(btn) {
+				if(document.getElementById("name").value !== "") {
+					if(document.getElementById("mobile").value != "") {
+						if(document.getElementById("select").value != "") {
+							Timing();
+							btn.innerText = "暂停答题";
+							r = plus.audio.getRecorder();
+							r.record({
+								filename: "_doc/audio/"
+							}, function(path) {
+								plus.nativeUI.toast(path);
+								plus.io.resolveLocalFileSystemURL(path, function(entry) {
+									recordURL = entry.toLocalURL();
+								}, errorCB);
+								plus.storage.setItem('recordState', 'true');
+							}, errorCB);
+						} else {
+							plus.nativeUI.toast('请选择样本');
+						}
+					} else {
+						plus.nativeUI.toast('请输入联系电话');
+					}
+				} else {
+					plus.nativeUI.toast('请输入户主姓名');
+				}
+
+			}
+
+			function stopAnswer　(btn) {
+				clearTimeout(timeId);
+				r.stop();
+				btn.innerText = "继续答题";
+			}
+
+			function errorCB(e) {
+				plus.nativeUI.toast("Audio record failed: " + e.message);
+			}
+
+			function getPosition(position) {
+				if(position.address.province != undefined && position.address.city != undefined && position.address.district != undefined) {
+					addresses = position.address.province + position.address.city + position.address.district;
+					plus.nativeUI.toast(addresses);
+				} else {
+					setTimeout(getPosition, 300);
+				}
+			}
+
+			mui.back = function() {
+				mui.confirm("退出将丢失当前答题数据，是否继续？", "提示信息", ["确定", "取消"], function(event) {
+					if(event.index == 0) {
+						mui.currentWebview.close('pop-out');
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

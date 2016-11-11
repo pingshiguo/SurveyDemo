@@ -1,0 +1,221 @@
+{
+	"index.html": {
+		"resources": [
+			"images/login_user_icon.png",
+			"images/logo.png",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"images/login_locked_icon.png"
+		],
+		"refer": []
+	},
+	"login.html": {
+		"resources": [
+			"images/login_user_icon.png",
+			"images/logo.png",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"images/login_locked_icon.png",
+			"js/immersed.js"
+		],
+		"refer": [
+			"main.html",
+			"main-subpages.html"
+		]
+	},
+	"main.html": {
+		"resources": [
+			"main-subpages.html",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"js/immersed.js",
+			"fonts/mui.ttf",
+			"js/statusbar.js",
+			"images/person_icon.png"
+		],
+		"refer": [
+			"main-subpages.html",
+			"person.html"
+		]
+	},
+	"main-subpages.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"js/immersed.js",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"survey.html"
+		]
+	},
+	"person.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"images/person_bg.png",
+			"images/person_default_photo.png",
+			"images/login_locked_icon.png",
+			"images/person_quit_icon.png",
+			"js/immersed.js"
+		],
+		"refer": [
+			"update.html",
+			"login.html"
+		]
+	},
+	"update.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"images/login_locked_icon.png",
+			"js/immersed.js"
+		],
+		"refer": []
+	},
+	"survey.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"images/tab_line.png",
+			"js/immersed.js",
+			"images/point_icon.png"
+		],
+		"refer": [
+			"sample.html",
+			"write.html",
+			"extract.html",
+			"surveyPhoto.html"
+		]
+	},
+	"sample-suppage.html": {
+		"resources": [
+			"js/statusbar.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"sample.html": {
+		"resources": [
+			"sample-suppage.html",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/immersed.js"
+		],
+		"refer": [
+			"sample-suppage.html"
+		]
+	},
+	"write.html": {
+		"resources": [
+			"images/mobile_icon.png",
+			"images/login_user_icon.png",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"images/login_locked_icon.png",
+			"js/immersed.js"
+		],
+		"refer": [
+			"selectTask.html",
+			"photograph.html",
+			"scan-code.html"
+		]
+	},
+	"selectTask.html": {
+		"resources": [
+			"selectTask-suppage.html",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/immersed.js"
+		],
+		"refer": [
+			"selectTask-suppage.html"
+		]
+	},
+	"photograph.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"images/default_icon.png",
+			"css/mui.min.css",
+			"js/immersed.js"
+		],
+		"refer": []
+	},
+	"scan-code.html": {
+		"resources": [
+			"images/code_icon.png",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/immersed.js"
+		],
+		"refer": []
+	},
+	"extract.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/immersed.js",
+			"extract-suppage.html"
+		],
+		"refer": [
+			"extract-suppage.html"
+		]
+	},
+	"extract-suppage.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"selectTask-suppage.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"selectSample.html"
+		]
+	},
+	"selectSample.html": {
+		"resources": [
+			"selectSample-suppage.html",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/immersed.js"
+		],
+		"refer": [
+			"selectSample-suppage.html"
+		]
+	},
+	"selectSample-suppage.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"surveyPhoto.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/immersed.js"
+		]
+	}
+}

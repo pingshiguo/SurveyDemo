@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-table-view:before,
+			.mui-table-view:after,
+			.mui-table-view-cell:before,
+			.mui-table-view-cell:after {
+				height: 0px;
+			}
+			
+			.mui-table-view {
+				margin: 0px;
+			}
+			
+			.mui-table-view-cell {
+				padding: 10px !important;
+			}
+			
+			.mui-table-view-cell.mui-active {
+				background-color: #f4f4f4;
+			}
+			
+			.item-content {
+				padding: 10px !important;
+			}
+			
+			.item-content p {
+				margin-bottom: 10px;
+			}
+			
+			.item-content p:last-child {
+				margin-bottom: 0px;
+			}
+			
+			.residentName {
+				color: #000000 !important;
+				font-size: 18px !important;
+			}
+			
+			.residentCode,
+			.residentDetail,
+			.codeInfo,
+			.detailInfo {
+				color: #4a4a4a !important;
+				font-size: 18px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view">
+				</ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: "#refreshContainer",
+					down: {
+						height: 50,
+						auto: false,
+						contentdown: "下拉可以刷新",
+						contentover: "释放立即刷新",
+						contentrefresh: "正在刷新...",
+						callback: pulldownRefresh
+					},
+					up: {
+						height: 50,
+						auto: true,
+						contentrefresh: "正在加载...",
+						contentnomore: "没有更多数据了",
+						callback: pullupRefresh
+					}
+				}
+			});
+			var ul = null;
+			var countUp = 1;
+			var countDown = 1;
+			var str = '<div class="item-content"><p><span class="residentName"></span><span class="state"></span></p><p><span class="codeInfo">住户编码：</span><span class="residentCode"></span></p><p><span class="detailInfo">住户信息：</span><span class="residentDetail"></span></p></div>';
+			var targetWebview = null;
+			mui.plusReady(function() {
+				ul = document.querySelector("ul");
+			});
+
+			function pulldownRefresh() {
+				setTimeout(function() {
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+				}, 1500);
+			}
+
+			function pullupRefresh() {
+				mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+				mui.ajax("http://139.196.196.64:8080/edsm/service/getSampleList?pageSize=10&page=" + countUp + "&taskId=" + mui.currentWebview.parent().taskId + "&stata=0", {
+					type: "get",
+					dataType: "json",
+					headers: {
+						token: plus.storage.getItem('token')
+					},
+					success: function(data) {
+						if(data.result == 1) {
+							var len = data.sampleList.length;
+							var cells = document.querySelectorAll(".mui-table-view-cell").length;
+							for(var i = 0; i < len; i++) {
+								var li = document.createElement('li');
+								li.className = 'mui-table-view-cell';
+								li.setAttribute('sampleId', data.sampleList[i].sampleId)
+								li.setAttribute('residentCode', data.sampleList[i].residentCode);
+								li.innerHTML = str;
+								ul.appendChild(li);
+								document.querySelectorAll('.residentName')[i + cells].innerHTML = (i + cells + 1) + "." + data.sampleList[i].residentName;
+								document.querySelectorAll('.residentCode')[i + cells].innerHTML = data.sampleList[i].residentCode;
+								document.querySelectorAll('.residentDetail')[i + cells].innerHTML = data.sampleList[i].residentDetail;
+								document.querySelectorAll(".mui-table-view .mui-table-view-cell")[i + cells].addEventListener('tap', function() {
+									var self = this;
+									targetWebview = plus.webview.getWebviewById('write');
+									mui.fire(targetWebview, 'selectSample', {
+										sampleId: self.getAttribute('sampleId'),
+										residentCode: self.getAttribute('residentCode')
+									});
+									targetWebview.show('pop-in', 200);
+
+								});
+							}
+							if(len < 10) {
+								mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+							} else {
+								mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+								countUp++;
+							}
+						} else {
+							plus.nativeUI.toast(data.msg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast(type);
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

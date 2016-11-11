@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-bar-nav {
+				background-color: #D63443;
+			}
+			
+			.mui-title {
+				color: #FFFFFF;
+			}
+			
+			.logo {
+				margin: 50px 0px 25px;
+				text-align: center;
+			}
+			
+			.logo img {
+				width: 166px;
+				height: 59px;
+			}
+			
+			.mui-input-group:before,
+			.mui-input-group:after,
+			.mui-input-row:after {
+				height: 0px !important;
+			}
+			
+			.mui-input-row {
+				margin: 20px 20px;
+				background-color: #FFFFFF;
+				border: 1px solid #EEEEEE;
+				border-radius: 25px;
+			}
+			
+			.mui-input-row label {
+				width: 20% !important;
+			}
+			
+			.mui-input-row label~input {
+				width: 80% !important;
+			}
+			
+			.mui-input-row label img {
+				width: 15px;
+				height: 15px;
+			}
+			
+			.mui-button-row {
+				margin: 25px 20px;
+			}
+			
+			.btn {
+				padding: 8px 0px;
+				background-color: #F54C4C;
+				color: #FFFFFF;
+				border-radius: 25px;
+				border: 1px solid #F54C4C;
+			}
+			
+			.btn:active {
+				background-color: #D63443 !important;
+				border: 1px solid #D63443 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">经济日报在线调查</h1>
+		</header>
+		<div id="content" class="mui-content">
+			<div class="mui-content-padded">
+				<div class="logo">
+					<img src="images/logo.png" />
+				</div>
+				<div class="mui-input-group">
+					<div class="mui-input-row">
+						<label><img src="images/login_user_icon.png"/></label>
+						<input id="userName" type="text" value="guopingshi" placeholder="用户名">
+					</div>
+					<div class="mui-input-row">
+						<label><img src="images/login_locked_icon.png"/></label>
+						<input id="password" type="password" value="666" placeholder="密码">
+					</div>
+					<div class="mui-button-row">
+						<button id="login-btn" type="button" class="mui-btn mui-btn-red mui-btn-block btn">登录</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.plusReady(function() {
+				if(plus.storage.getItem('token')) {
+					mui.openWindow({
+						url: 'main.html',
+						id: 'main',
+						show: {
+							aniShow: 'pop-in'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				} else {
+					plus.webview.currentWebview().show('pop-in');
+				}
+
+				plus.webview.currentWebview().setStyle({
+					scrollIndicator: 'none'
+				});
+				setTimeout(function() {
+					plus.navigator.closeSplashscreen();
+				}, 600);
+				
+				document.getElementById('login-btn').addEventListener('tap', function() {
+					un = document.getElementById("userName").value;
+					pd = document.getElementById("password").value;
+					mui.ajax('http://139.196.196.64:8080/edsm/service/login', {
+						type: "get",
+						data: {
+							userName: un,
+							password: pd
+						},
+						dataType: "json",
+						timeout: 3000,
+						success: function(data) {
+							if(data.result == 1) {
+								plus.nativeUI.toast(data.msg);
+								initData(data);
+								var targetWebview = plus.webview.create('main.html', 'main', {
+									scrollIndicator: 'none',
+									scalable: false
+								});
+
+								targetWebview.addEventListener('loaded', function() {
+									setTimeout(function() {
+										targetWebview.show('pop-in');
+									}, 50);
+								}, false);
+							} else {
+								plus.nativeUI.toast(data.msg);
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							plus.nativeUI.toast(type);
+						}
+					});
+				});
+				var backButtonPress = 0;
+				mui.back = function(event) {
+					backButtonPress++;
+					if(backButtonPress > 1) {
+						plus.runtime.quit();
+					} else {
+						plus.nativeUI.toast('再按一次退出应用');
+					}
+					setTimeout(function() {
+						backButtonPress = 0;
+					}, 1000);
+					return false;
+				};
+			});
+			function initData(data) {
+				plus.storage.setItem('token', data.user.token);
+				plus.storage.setItem('userName', data.user.userName);
+				plus.storage.setItem('realName', data.user.realName);
+				plus.storage.setItem('IDCard', data.user.IDCard);
+				plus.storage.setItem('phoneNum', data.user.phoneNum);
+				plus.storage.setItem('headUrl',data.user.headUrl);
+			}
+		</script>
+	</body>
+
+</html>

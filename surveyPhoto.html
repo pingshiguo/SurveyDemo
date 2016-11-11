@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-bar-nav {
+				background-color: #D63443;
+			}
+			
+			.mui-title {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav:active {
+				color: #FFFFFF;
+			}
+			
+			.footer-btn {
+				position: fixed;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+				z-index: 10;
+				padding: 10px;
+				background-color: #FFFFFF;
+			}
+			
+			.footer-btn .mui-button-row {
+				padding: 0px 10px;
+			}
+			
+			.btn {
+				font-size: 16px !important;
+				padding: 8px !important;
+				background-color: #F54C4C !important;
+				border: 1px solid #F54C4C !important;
+				margin-bottom: 0px !important;
+			}
+			
+			.btn:active {
+				background-color: #D63443 !important;
+				border: 1px solid #D63443 !important;
+			}
+			
+			.mui-table-view:before,
+			.mui-table-view:after,
+			.mui-table-view-cell:before,
+			.mui-table-view-cell:after {
+				height: 0px;
+			}
+			
+			.mui-table-view {
+				padding: 0px 10px;
+			}
+			
+			.image {
+				width: 100% !important;
+				height: 100% !important;
+				border-radius: 5px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">问卷拍照</h1>
+		</header>
+		<div class="footer-btn">
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-red mui-btn-block btn">拍照</button>
+			</div>
+		</div>
+		<div id="content" class="mui-content">
+			<div class="mui-content-padded">
+				<ul class="mui-table-view mui-grid-view">
+				</ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var ul = document.querySelector('.mui-table-view');
+			mui.plusReady(function() {
+				document.querySelector(".btn").addEventListener('tap', function() {
+					var cmr = plus.camera.getCamera();
+					cmr.captureImage(successCB, errorCB, {
+						filename: "_doc/wenjuanzhaopian/"
+					});
+				});
+				plus.storage.setItem('imgState2', 'true');
+			});
+
+			function successCB(path) {
+				plus.io.resolveLocalFileSystemURL(path, function(entry) {
+					var li = document.createElement("li");
+					li.className = "mui-table-view-cell mui-col-xs-4";
+					li.innerHTML = "<img class='image' src='" + entry.toLocalURL() + "' />";
+					ul.appendChild(li);
+					plus.nativeUI.toast(entry.toLocalURL());
+				}, errorCB);
+			}
+
+			function errorCB(error) {
+				plus.nativeUI.toast(error.message);
+			}
+		</script>
+	</body>
+
+</html>

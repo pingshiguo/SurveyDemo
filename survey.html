@@ -1,0 +1,571 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-bar-nav {
+				background-color: #D63443;
+			}
+			
+			.mui-title {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav:active {
+				color: #FFFFFF;
+			}
+			
+			.mui-segmented-control .mui-control-item.mui-active {
+				color: #d8495a !important;
+				border-bottom: none !important;
+			}
+			
+			.mui-segmented-control .mui-control-item {
+				font-size: 18px;
+				color: #525151 !important;
+			}
+			
+			.mui-control-item img {
+				float: right;
+				height: 10px;
+				margin-top: 14px;
+			}
+			
+			.mui-control-item:last-child img {
+				float: left;
+			}
+			
+			#introduction,
+			#process,
+			#task {
+				margin: 0px 5px;
+			}
+			
+			#introduction .tips {
+				background-color: #f4f4f4;
+				padding: 10px;
+				text-align: center;
+			}
+			
+			#introduction .tips p {
+				color: #000000;
+				margin: 0px;
+				font-size: 16px;
+			}
+			
+			#introduction .title {
+				margin: 20px 0px;
+				border-left: 4px solid #d8495a;
+			}
+			
+			#introduction .title span {
+				margin-left: 10px;
+				font-size: 18px;
+			}
+			
+			#introduction .info {
+				padding: 10px;
+			}
+			
+			#introduction .info img {
+				float: left;
+				width: 80px;
+				height: 94px;
+				margin-right: 10px;
+			}
+			
+			#introduction .info p {
+				border: 1px solid transparent;
+				margin-bottom: 10px;
+			}
+			
+			#introduction .info p:last-child {
+				margin-bottom: 0px;
+			}
+			
+			#introduction .info p span {
+				color: #000000;
+				font-size: 16px;
+			}
+			
+			#realName,
+			#IDCard,
+			#phoneNum {
+				color: #5b5b5b;
+				font-size: 16px;
+			}
+			
+			#introduction .sDes {
+				margin: 10px 0px;
+				padding: 10px 0px;
+			}
+			
+			#introduction .sDes p {
+				margin: 0px;
+				color: #4a4a4a !important;
+				text-indent: 2em;
+				font-size: 16px;
+			}
+			
+			#introduction .mui-input-group:before,
+			#introduction .mui-input-group:after {
+				height: 0px !important;
+			}
+			
+			.btn {
+				padding: 8px 0px;
+				background-color: #F54C4C;
+				color: #FFFFFF;
+				border: 1px solid #F54C4C;
+			}
+			
+			.btn:active {
+				background-color: #D63443 !important;
+				border: 1px solid #D63443 !important;
+			}
+			
+			#process-tips {
+				background-color: #f4f4f4;
+				padding: 10px;
+			}
+			
+			#process-tips p {
+				color: #000000;
+				margin-bottom: 0px;
+				font-size: 16px;
+			}
+			
+			#process-tips p:last-child {
+				margin-top: 5px !important;
+				margin-bottom: 0px !important;
+			}
+			
+			#process-tips p img {
+				width: 6px;
+				height: 6px;
+				margin-right: 5px !important;
+				position: relative;
+				top: -2px;
+			}
+			
+			.mui-table-view:before,
+			.mui-table-view:after,
+			.mui-table-view-cell:before,
+			.mui-table-view-cell:after {
+				height: 0px;
+			}
+			
+			#process-ul {
+				margin: 10px 0px !important;
+			}
+			
+			.wenjuanmingcheng {
+				color: #000000 !important;
+				font-size: 16px !important;
+			}
+			
+			.questionInfor {
+				margin: 0px 10px;
+				font-size: 16px !important;
+			}
+			
+			#process-ul .mui-table-view-cell .mui-button-row {
+				margin-top: 10px;
+				padding: 0px;
+				float: left;
+				width: 100%;
+			}
+			
+			.btn {
+				font-size: 16px !important;
+				padding: 8px 0px !important;
+				background-color: #F54C4C !important;
+				border: 1px solid #F54C4C !important;
+			}
+			
+			.btn:active {
+				background-color: #D63443 !important;
+				border: 1px solid #D63443 !important;
+			}
+			
+			.paizhao-btn {
+				float: left;
+				width: 45%;
+			}
+			
+			.shangchuan-btn {
+				float: right;
+				width: 45%;
+			}
+			
+			#task-ul .mui-table-view-cell {
+				background-color: #F4F4F4;
+				padding: 10px;
+			}
+			
+			#task-ul .mui-table-view-cell.mui-active {
+				background-color: #FFFFFF;
+			}
+			
+			#task-ul .mui-table-view-cell .item-content {
+				padding: 10px;
+				float: left;
+				width: 100%;
+			}
+			
+			#task-ul .mui-table-view-cell .item-content p {
+				margin-bottom: 10px;
+			}
+			
+			#task-ul .mui-table-view-cell .item-content p span {
+				color: #000000;
+				font-size: 16px;
+			}
+			
+			.committee,
+			.address {
+				color: #4a4a4a !important;
+				font-size: 16px;
+			}
+			
+			.isSampled {
+				font-size: 16px;
+				color: #D8495A;
+				float: right;
+				margin: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="surveyName" class="mui-title mui-fade"></h1>
+		</header>
+		<div id="content" class="mui-content">
+			<div class="mui-content-padded">
+				<div class="mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#introduction">调查介绍<img src="images/tab_line.png" /></a>
+					<a class="mui-control-item" href="#process">调查进程</a>
+					<a class="mui-control-item" href="#task"><img src="images/tab_line.png" />调查任务</a>
+				</div>
+			</div>
+			<div id="introduction" class="mui-control-content mui-active">
+				<div class="tips">
+					<p>感谢您参与此次调查，答题后您将获得奖品！</p>
+				</div>
+				<div class="title">
+					<span>调查员</span>
+				</div>
+				<div class="info">
+					<img id="headImg" />
+					<p class="mui-ellipsis"><span>姓&nbsp;&nbsp;&nbsp;&nbsp;名：</span><span id="realName"></span></p>
+					<p class="mui-ellipsis"><span>身份证：</span><span id="IDCard"></span></p>
+					<p class="mui-ellipsis"><span>手机号：</span><span id="phoneNum"></span></p>
+				</div>
+				<div class="title">
+					<span>调查介绍</span>
+				</div>
+				<div class="sDes">
+					<p id="surveyDes"></p>
+				</div>
+				<div class="mui-input-group">
+					<div class="mui-button-row">
+						<button id="toWrite" type="button" class="mui-btn mui-btn-red mui-btn-block btn">进入答题</button>
+					</div>
+				</div>
+			</div>
+			<div id="process" class="mui-control-content">
+				<div id="process-tips">
+					<p><img src="images/point_icon.png" />全国已完成<span id="countryCount"></span>份调查</p>
+					<p><img src="images/point_icon.png" />湖南省已完成<span id="provinceCount"></span>份调查</p>
+				</div>
+				<ul id="process-ul" class="mui-table-view">
+				</ul>
+			</div>
+			<div id="task" class="mui-control-content">
+				<div id="taskRefresh" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<ul id="task-ul" class="mui-table-view">
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: "#taskRefresh",
+					up: {
+						height: 50,
+						auto: true,
+						contentrefresh: "正在加载...",
+						contentnomore: "没有更多数据了",
+						callback: pullupRefresh
+					}
+				}
+			});
+			var self = null;
+			var countUp = 1;
+			var surveyId = null;
+			var surveyName = null;
+			var str = '<div class="item-content"><p><span>名称：</span><span class="committee"></span></p><p><span>地址：</span><span class="address"></span></p><div><span class="isSampled"></span></div></div>';
+			var ul = document.getElementById("task-ul");
+			var process_ul = document.getElementById('process-ul');
+			var targetWebview = null;
+			mui.plusReady(function() {
+				document.getElementById("headImg").src = plus.storage.getItem('headUrl');
+				document.getElementById("realName").innerHTML = plus.storage.getItem('realName');
+				document.getElementById("IDCard").innerHTML = plus.storage.getItem('IDCard');
+				document.getElementById("phoneNum").innerHTML = plus.storage.getItem('phoneNum');
+				self = plus.webview.currentWebview();
+				document.getElementById("toWrite").addEventListener('tap', function() {
+					targetWebview = plus.webview.create('write.html', 'write', {
+						scrollIndicator: 'none',
+						scalable: false
+					}, {
+						surveyId: surveyId
+					});
+
+					targetWebview.addEventListener('loaded', function() {
+						targetWebview.show('pop-in');
+					}, false);
+				});
+			});
+			window.addEventListener('update', function(event) {
+				document.getElementById("surveyName").innerHTML = event.detail.surveyName;
+				document.getElementById("surveyDes").innerHTML = event.detail.surveyDes;
+				if(ul.childNodes.length != 0) {
+					for(var i = 0; i < ul.childNodes.length; i++) {
+						ul.removeChild(ul.childNodes[0]);
+					}
+				}
+				surveyId = event.detail.surveyId;
+				surveyName = event.detail.surveyName;
+				mui('#taskRefresh').pullRefresh().refresh(true);
+				mui('#taskRefresh').pullRefresh().pullupLoading();
+				mui.ajax('http://139.196.196.64:8080/edsm/service/getSurveyFinishCount', {
+					type: "post",
+					dataType: "json",
+					headers: {
+						token: plus.storage.getItem('token')
+					},
+					data: {
+						surveyId: event.detail.surveyId,
+						provinceName: "湖南"
+					},
+					success: function(data) {
+						if(data.result == 1) {
+							document.getElementById("countryCount").innerHTML = data.countryCount;
+							document.getElementById("provinceCount").innerHTML = data.provinceCount;
+						} else {
+							plus.nativeUI.toast(data.msg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast(type);
+					}
+				});
+			}, false);
+
+			window.addEventListener('addInfo', function(event) {
+				plus.storage.removeItem('recordState');
+				plus.storage.removeItem('imgState1');
+				plus.storage.removeItem('scanState');
+				var cells = document.querySelectorAll(".cell-active").length;
+				var li = document.createElement("li");
+				li.className = 'mui-table-view-cell cell-active';
+				li.innerHTML = '<div class="item-content"><p class="mui-ellipsis wenjuanmingcheng"><span class="mingcheng"></span></p><p class="mui-ellipsis questionInfor">开始时间：<span class="kaishishijian"></span></p><p class="mui-ellipsis questionInfor">结束时间：<span class="jieshushijian"></span></p><p class="mui-ellipsis questionInfor">户主姓名：<span class="huzhuxingming"></span></p><p class="mui-ellipsis questionInfor">联系电话：<span class="lianxidianhua"></span></p><p class="mui-ellipsis questionInfor">家庭住址：<span class="jiatingzhuzhi"></span></p></div><div class="mui-button-row"><button type="button" class="mui-btn mui-btn-red btn paizhao-btn">问卷拍照</button><button type="button" class="mui-btn mui-btn-red btn shangchuan-btn">上传录音</button></div>';
+				li.setAttribute('indx', cells);
+				li.setAttribute('answerId', event.detail.answerId);
+				li.setAttribute('recordURL', event.detail.recordURL);
+				li.setAttribute('heyingURL', event.detail.heyingURL);
+				process_ul.appendChild(li);
+				document.querySelectorAll(".mingcheng")[cells].innerHTML = (cells + 1) + "." + surveyName;
+				document.querySelectorAll(".kaishishijian")[cells].innerHTML = event.detail.startTime;
+				document.querySelectorAll(".jieshushijian")[cells].innerHTML = event.detail.endTime;
+				document.querySelectorAll(".huzhuxingming")[cells].innerHTML = event.detail.huzhuxingming;
+				document.querySelectorAll(".lianxidianhua")[cells].innerHTML = event.detail.shoujihao;
+				document.querySelectorAll(".jiatingzhuzhi")[cells].innerHTML = event.detail.addresses;
+				document.querySelectorAll(".paizhao-btn")[cells].addEventListener('tap', function() {
+					var targetWebview = plus.webview.create('surveyPhoto.html', 'surveyPhoto', {
+						scrollIndicator: 'none',
+						scalable: false
+					});
+
+					targetWebview.addEventListener('loaded', function() {
+						targetWebview.show('pop-in');
+					}, false);
+				});
+
+				document.querySelectorAll(".shangchuan-btn")[cells].addEventListener('tap', function() {
+					var btn = this;
+					if(plus.storage.getItem('imgState2')) {
+
+						//上传合影
+						//						var task = plus.uploader.createUpload('http://139.196.196.64:8080/edsm/service/uploadAnswerFile', {
+						//								method: 'POST'
+						//							},
+						//							function(t, status) {
+						//								if(t.state == 4 && status == 200) {
+						//									console.log(t.responseText);
+						//
+						//								} else {
+						//									plus.nativeUI.toast(status);
+						//								}
+						//							});
+						//						task.addFile(heyingURL, {
+						//							key: 'answerFile'
+						//						});
+						//task.addData("type", "0");
+
+						//上传录音
+						var task = plus.uploader.createUpload('http://139.196.196.64:8080/edsm/service/uploadAnswerFile', {
+								method: 'POST'
+							},
+							function(t, status) {
+								if(t.state == 4 && status == 200) {
+									console.log(t.responseText);
+									process_ul.removeChild(btn.parentElement.parentElement);
+									plus.storage.removeItem('imgState2');
+								} else {
+									plus.nativeUI.toast(status);
+								}
+							});
+						task.addFile(btn.parentElement.parentElement.getAttribute('recordURL'), {
+							key: 'answerFile'
+						});
+						task.addData("type", "2");
+						task.addData("surveyId", surveyId);
+						task.addData("answerId", btn.parentElement.parentElement.getAttribute('answerId') + "");
+						task.setRequestHeader("token", plus.storage.getItem('token'));
+						task.addEventListener("statechanged", onStateChanged, false);
+						task.start();
+						w = plus.nativeUI.showWaiting("上传中，请等待...\n0%", {
+							width: "200px",
+							height: "100px",
+							background: "#000000",
+							padding: "0px"
+						});
+					} else {
+						plus.nativeUI.toast('没有问卷照片');
+					}
+				});
+			}, false);
+
+			function onStateChanged(upload, status) {
+				// Upload state changed code.
+				//console.log(upload.uploadedSize); // 已上传的字节数
+				w.setTitle("上传中，请等待...\n" + Math.floor((upload.uploadedSize / upload.totalSize) * 100) + "%");
+				if(upload.uploadedSize == upload.totalSize) {
+					w.close();
+				}
+			}
+
+			function pullupRefresh() {
+				mui.ajax("http://139.196.196.64:8080/edsm/service/getUserTaskList?pageSize=10&page=" + countUp + "&surveyId=" + surveyId, {
+					type: "get",
+					dataType: "json",
+					headers: {
+						token: plus.storage.getItem('token')
+					},
+					success: function(data) {
+						if(data.result == 1) {
+							var len = data.taskList.length;
+							var cells = document.querySelectorAll("#task-ul .mui-table-view-cell").length;
+							for(var i = 0; i < len; i++) {
+								var li = document.createElement('li');
+								li.className = 'mui-table-view-cell';
+								li.innerHTML = str;
+								ul.appendChild(li);
+								li.setAttribute('taskId', data.taskList[i].taskId);
+								li.setAttribute('committee', data.taskList[i].committee);
+								li.setAttribute('isSampled', data.taskList[i].isSampled);
+								document.querySelectorAll(".committee")[i + cells].innerHTML = data.taskList[i].committee;
+								if(data.taskList[i].province == data.taskList[i].city) {
+									document.querySelectorAll(".address")[i + cells].innerHTML = data.taskList[i].province + data.taskList[i].district + data.taskList[i].street;
+								} else {
+									document.querySelectorAll(".address")[i + cells].innerHTML = data.taskList[i].province + data.taskList[i].city + data.taskList[i].district + data.taskList[i].street;
+								}
+								if(data.taskList[i].isSampled == 1) {
+									document.querySelectorAll(".isSampled")[i + cells].innerHTML = "查看样本&nbsp;&nbsp;>";
+								} else if(data.taskList[i].isSampled == 0) {
+									document.querySelectorAll(".isSampled")[i + cells].innerHTML = "抽取样本&nbsp;&nbsp;>";
+								}
+								document.querySelectorAll("#task-ul .mui-table-view-cell")[i + cells].addEventListener('tap', function() {
+									var self = this;
+									if(self.getAttribute('isSampled') == 1) {
+										targetWebview = plus.webview.create('sample.html', 'sample', {
+											scrollIndicator: 'none',
+											scalable: false
+										}, {
+											taskId: self.getAttribute('taskId')
+										});
+
+										targetWebview.addEventListener('loaded', function() {
+											setTimeout(function() {
+												targetWebview.show('pop-in');
+											}, 50);
+										}, false);
+									} else if(self.getAttribute('isSampled') == 0) {
+										targetWebview = plus.webview.create('extract.html', 'extract', {
+											scrollIndicator: 'none',
+											scalable: false
+										}, {
+											taskId: self.getAttribute('taskId'),
+											committee: self.getAttribute('committee')
+										});
+										targetWebview.addEventListener('loaded', function() {
+											setTimeout(function() {
+												targetWebview.show('pop-in');
+											}, 50);
+										}, false);
+									}
+								});
+							}
+							if(len < 10) {
+								mui('#taskRefresh').pullRefresh().endPullupToRefresh(true);
+								mui('#taskRefresh').pullRefresh().disablePullupToRefresh();
+							} else {
+								mui('#taskRefresh').pullRefresh().endPullupToRefresh(false);
+								countUp++;
+							}
+						} else {
+							plus.nativeUI.toast(data.msg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast(type);
+					}
+				});
+			}
+
+			mui.back = function() {
+				self.hide('auto');
+				setTimeout(function() {
+					document.querySelector('.mui-title').innerHTML = '';
+					document.getElementById("surveyDes").innerHTML = '';
+					document.getElementById("countryCount").innerHTML = '';
+					document.getElementById("provinceCount").innerHTML = '';
+					surveyId = null;
+				}, 150);
+			};
+		</script>
+	</body>
+
+</html>

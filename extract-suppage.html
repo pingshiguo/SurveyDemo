@@ -1,0 +1,743 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-content {
+				margin-top: 120px !important;
+			}
+			
+			.header-content {
+				position: fixed;
+				top: 0px;
+				left: 0px;
+				right: 0px;
+				z-index: 10;
+				background-color: #FFFFFF;
+				height: 120px;
+			}
+			
+			.tips {
+				margin: 10px;
+			}
+			
+			.tips p {
+				color: #4a4a4a !important;
+				font-size: 16px !important;
+				margin-bottom: 5px;
+			}
+			
+			.tips p span {
+				color: #000000 !important;
+				font-size: 16px !important;
+			}
+			
+			.header-content .mui-button-row {
+				padding: 0px;
+				margin-bottom: 10px;
+			}
+			
+			.footer-btn {
+				position: fixed;
+				bottom: 0px;
+				left: 0px;
+				right: 0px;
+				z-index: 10;
+				padding: 10px;
+				background-color: #FFFFFF;
+			}
+			
+			.footer-btn .mui-button-row {
+				width: 100%;
+				float: left;
+				padding: 0px;
+			}
+			
+			.btn {
+				font-size: 16px !important;
+				padding: 8px !important;
+				background-color: #F54C4C !important;
+				border: 1px solid #F54C4C !important;
+				margin-bottom: 0px !important;
+			}
+			
+			.btn:active {
+				background-color: #D63443 !important;
+				border: 1px solid #D63443 !important;
+			}
+			
+			.btn-clear {
+				width: 45% !important;
+				float: left;
+			}
+			
+			.btn-submit {
+				width: 45% !important;
+				float: right;
+			}
+			
+			.mui-table-view:before,
+			.mui-table-view:after,
+			.mui-table-view-cell:before,
+			.mui-table-view-cell:after {
+				height: 0px;
+			}
+			
+			#build-tip {
+				top: 10%;
+				display: none;
+			}
+			
+			#houseNumber-tip {
+				top: 20%;
+				display: none;
+			}
+			
+			#country-tip {
+				top: 20%;
+				display: none;
+			}
+			
+			.mui-card {
+				width: 65%;
+				z-index: 999;
+				position: fixed;
+				left: 15% !important;
+			}
+			
+			.mui-card-header {
+				background-color: #D63443;
+				padding: 0px !important;
+				margin-top: 0px !important;
+				margin-bottom: 0px !important;
+			}
+			
+			.mui-card-header span {
+				margin: 0px auto;
+				color: #FFFFFF;
+				font-size: 16px;
+			}
+			
+			.mui-card-content {
+				padding: 15px;
+			}
+			
+			.mui-card-content p {
+				font-size: 16px;
+				color: #000000;
+				margin: 15px;
+			}
+			
+			.mui-card-footer {
+				padding: 5px;
+				margin: 0px !important;
+				background-color: #F4F4F4;
+			}
+			
+			.mui-card-footer .mui-button-row {
+				width: 100%;
+				padding: 0px;
+				float: left;
+			}
+			
+			.card-btn {
+				padding: 5px 10px;
+				font-size: 16px !important;
+				margin: 0px 10px;
+				background-color: #F54C4C !important;
+				border: 1px solid #F54C4C !important;
+			}
+			
+			.btn-ok {
+				width: 35%;
+				float: left;
+			}
+			
+			.btn-cancel {
+				width: 35%;
+				float: right;
+			}
+			
+			.input-content {
+				width: 100%;
+				margin: 0px auto;
+			}
+			
+			.input-div,
+			.input-div-2 {
+				width: 100%;
+			}
+			
+			.input-div-2 input {
+				width: 45px;
+			}
+			
+			.input-div input {
+				width: 140px;
+			}
+			
+			.communityName {
+				color: #000000 !important;
+				font-size: 16px !important;
+			}
+			
+			.del {
+				float: right;
+				color: #FFFFFF;
+				font-size: 14px !important;
+				padding: 5px;
+				background-color: #F64C4D;
+				border-radius: 5px;
+			}
+			
+			.info {
+				color: #4a4a4a !important;
+				font-size: 16px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="header-content">
+			<div class="tips">
+				<p class="mui-ellipsis">名称：<span id="committee"></span></p>
+				<p class="mui-ellipsis">至少录入<span>40</span>个，已经录入<span id="numberInfo">0</span>个</p>
+			</div>
+			<div class="mui-button-row">
+				<button id="house" type="button" class="mui-btn mui-btn-red btn">楼房录入</button>
+				<button id="houseNumber" type="button" class="mui-btn mui-btn-red btn">门牌号录入</button>
+				<button id="countryside" type="button" class="mui-btn mui-btn-red btn">农村录入</button>
+			</div>
+		</div>
+		<div class="footer-btn">
+			<div class="mui-button-row">
+				<button id="clear-btn" type="button" class="mui-btn mui-btn-red mui-btn-block btn btn-clear">清除列表</button>
+				<button id="submit-btn" type="button" class="mui-btn mui-btn-red mui-btn-block btn btn-submit">提交信息</button>
+			</div>
+		</div>
+		<div id="build-tip" class="mui-card">
+			<div class="mui-card-header">
+				<span>请输入住户信息</span>
+			</div>
+			<div id="tip-content" class="mui-card-content">
+				<div class="input-content">
+					<div class="input-div"><label>小区名</label><input id="community" type="text" value="" /></div>
+					<div class="input-div-2"><label>院&nbsp;&nbsp;&nbsp;&nbsp;号</label><input id="courtyard" type="text" value="" /><label>&nbsp;&nbsp;楼&nbsp;&nbsp;&nbsp;&nbsp;号</label><input id="floorName" type="text" value="" /></div>
+					<div class="input-div-2"><label>单元号</label><input id="unit" type="text" value="" /><label>&nbsp;&nbsp;楼层数</label><input id="floorNumber" type="text" value="" /></div>
+					<div class="input-div"><label>层户数</label><input id="layerNumber" type="text" value="" /></div>
+				</div>
+			</div>
+			<div class="mui-card-footer">
+				<div class="mui-button-row button-row">
+					<button id="build-ok" type="button" class="mui-btn mui-btn-red card-btn btn-ok">确定</button>
+					<button id="build-cancel" type="button" class="mui-btn mui-btn-red card-btn btn-cancel">取消</button>
+				</div>
+			</div>
+		</div>
+		<div id="houseNumber-tip" class="mui-card">
+			<div class="mui-card-header">
+				<span>请输入住户信息</span>
+			</div>
+			<div id="tip-content" class="mui-card-content">
+				<div class="input-content">
+					<div class="input-div"><label>街&nbsp;&nbsp;道&nbsp;&nbsp;名</label><input id="hsName" type="text" value="" /></div>
+					<div class="input-div"><label>开始编号</label><input id="hsStart" type="text" value="" /></div>
+					<div class="input-div"><label>结束编号</label><input id="hsEnd" type="text" value="" /></div>
+				</div>
+			</div>
+			<div class="mui-card-footer">
+				<div class="mui-button-row button-row">
+					<button id="houseNumber-ok" type="button" class="mui-btn mui-btn-red card-btn btn-ok">确定</button>
+					<button id="houseNumber-cancel" type="button" class="mui-btn mui-btn-red card-btn btn-cancel">取消</button>
+				</div>
+			</div>
+		</div>
+		<div id="country-tip" class="mui-card">
+			<div class="mui-card-header">
+				<span>请输入住户信息</span>
+			</div>
+			<div id="tip-content" class="mui-card-content">
+				<div class="input-content">
+					<div class="input-div"><label>村&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label><input id="csName" type="text" value="" /></div>
+					<div class="input-div"><label>开始编号</label><input id="csStart" type="text" value="" /></div>
+					<div class="input-div"><label>结束编号</label><input id="csEnd" type="text" value="" /></div>
+				</div>
+			</div>
+			<div class="mui-card-footer">
+				<div class="mui-button-row button-row">
+					<button id="country-ok" type="button" class="mui-btn mui-btn-red card-btn btn-ok">确定</button>
+					<button id="country-cancel" type="button" class="mui-btn mui-btn-red card-btn btn-cancel">取消</button>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<ul class="mui-table-view">
+				</ul>
+			</div>
+		</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				beforeback: myback
+			});
+			var liStr = '<p><span class="communityName">sss</span><span class="del">删除</span></p><p class="mui-ellipsis-2 info">sss</p>';
+			var showDiv = false;
+			var mask = mui.createMask(closeDiv);
+			var ul = document.querySelector('.mui-table-view');
+			var flag;
+			var residentData = new Array();
+			var residentString = "";
+			mui.plusReady(function() {
+				document.getElementById("committee").innerHTML = mui.currentWebview.parent().committee;
+				document.getElementById("house").addEventListener('tap', function() {
+					mask.show();
+					document.getElementById("build-tip").style.display = 'block';
+					showDiv = true;
+					flag = 1;
+				});
+
+				document.getElementById("houseNumber").addEventListener('tap', function() {
+					mask.show();
+					document.getElementById("houseNumber-tip").style.display = 'block';
+					showDiv = true;
+					flag = 2;
+
+				});
+
+				document.getElementById("countryside").addEventListener('tap', function() {
+					mask.show();
+					document.getElementById("country-tip").style.display = 'block';
+					showDiv = true;
+					flag = 3;
+				});
+
+				document.getElementById("build-ok").addEventListener('tap', function() {
+					var xiaoquming = document.getElementById("community").value;
+					var yuanhao = document.getElementById("courtyard").value;
+					var louhao = document.getElementById("floorName").value;
+					var danyuanhao = document.getElementById("unit").value;
+					var loucengshu = document.getElementById("floorNumber").value;
+					var cenghushu = document.getElementById("layerNumber").value;
+					if(xiaoquming == "" || yuanhao == "" || louhao == "" || danyuanhao == "" || loucengshu == "" || cenghushu == "") {
+						plus.nativeUI.toast('信息不能为空');
+					} else {
+						if(parseInt(yuanhao) >= 1 && parseInt(louhao) >= 1 && parseInt(danyuanhao) >= 1 && parseInt(loucengshu) >= 1) {
+							if(residentData.length > 0) {
+								var result1 = true;
+								for(var i = 0; i < residentData.length; i++) {
+									if((residentData[i].commiteeName == xiaoquming && residentData[i].yuanhao == yuanhao && residentData[i].louhao == louhao && residentData[i].danyuanhao == danyuanhao)) {
+										result1 = false;
+									}
+								}
+								if(result1) {
+									var cells = document.querySelectorAll("li").length;
+									var li = document.createElement('li');
+									li.innerHTML = liStr;
+									ul.appendChild(li);
+									li.className = 'mui-table-view-cell';
+									li.setAttribute('index', cells);
+									li.setAttribute('type', 1);
+									li.setAttribute('loucengshu', parseInt(loucengshu));
+									li.setAttribute('cenghushu', parseInt(cenghushu));
+									document.querySelectorAll(".communityName")[cells].innerHTML = xiaoquming;
+									document.querySelectorAll(".info")[cells].innerHTML = "院号：" + yuanhao + "楼号：" + louhao + " 单元号：" + danyuanhao + "楼层数：" + loucengshu + "层户数：" + cenghushu;
+									document.getElementById("numberInfo").innerHTML = parseInt(document.getElementById("numberInfo").innerText) + parseInt(loucengshu) * parseInt(cenghushu);
+									document.querySelectorAll(".del")[cells].addEventListener('tap', deleteLi);
+									residentData[cells] = {
+										'commiteeName': xiaoquming,
+										'type': 1,
+										'yuanhao': yuanhao,
+										'louhao': louhao,
+										'danyuanhao': danyuanhao,
+										'loucengshu': loucengshu,
+										'cenghushu': cenghushu,
+										'startCode': 0,
+										'endCode': 0
+									};
+									if(cells == 0) {
+										residentString = JSON.stringify(residentData[cells]);
+									} else {
+										residentString += "," + JSON.stringify(residentData[cells]);
+									}
+									closeDiv();
+									mask.close();
+									showDiv = false;
+
+								} else {
+									plus.nativeUI.toast('信息不能相同');
+									closeDiv();
+									mask.close();
+									showDiv = false;
+								}
+							} else {
+								var cells = document.querySelectorAll("li").length;
+								var li = document.createElement('li');
+								li.innerHTML = liStr;
+								ul.appendChild(li);
+								li.className = 'mui-table-view-cell';
+								li.setAttribute('index', cells);
+								li.setAttribute('type', 1);
+								li.setAttribute('loucengshu', parseInt(loucengshu));
+								li.setAttribute('cenghushu', parseInt(cenghushu));
+								document.querySelectorAll(".communityName")[cells].innerHTML = xiaoquming;
+								document.querySelectorAll(".info")[cells].innerHTML = "院号：" + yuanhao + "楼号：" + louhao + "单元号：" + danyuanhao + "楼层数：" + loucengshu + "层户数：" + cenghushu;
+								document.getElementById("numberInfo").innerHTML = parseInt(document.getElementById("numberInfo").innerText) + parseInt(loucengshu) * parseInt(cenghushu);
+								document.querySelectorAll(".del")[cells].addEventListener('tap', deleteLi);
+								residentData[cells] = {
+									'commiteeName': xiaoquming,
+									'type': 1,
+									'yuanhao': yuanhao,
+									'louhao': louhao,
+									'danyuanhao': danyuanhao,
+									'loucengshu': loucengshu,
+									'cenghushu': cenghushu,
+									'startCode': 0,
+									'endCode': 0
+								};
+								if(cells == 0) {
+									residentString = JSON.stringify(residentData[cells]);
+								} else {
+									residentString += "," + JSON.stringify(residentData[cells]);
+								}
+								closeDiv();
+								mask.close();
+								showDiv = false;
+							}
+						} else {
+							plus.nativeUI.toast('信息错误');
+							closeDiv();
+							mask.close();
+							showDiv = false;
+						}
+					}
+				});
+				document.getElementById("houseNumber-ok").addEventListener('tap', function() {
+					var jiedaoming = document.getElementById("hsName").value;
+					var hStart = document.getElementById("hsStart").value;
+					var hEnd = document.getElementById("hsEnd").value;
+					if(jiedaoming == "" || hStart == "" || hEnd == "") {
+						plus.nativeUI.toast('信息不能为空');
+					} else {
+						if(parseInt(hStart) >= 1 && parseInt(hEnd) >= 1 && parseInt(hStart) < parseInt(hEnd)) {
+							if(residentData.length > 0) {
+								var result2 = true;
+								for(var i = 0; i < residentData.length; i++) {
+									if(residentData[i].commiteeName == jiedaoming) {
+										result2 = false;
+									}
+								}
+								if(result2) {
+									var cells = document.querySelectorAll("li").length;
+									var li = document.createElement('li');
+									li.innerHTML = liStr;
+									ul.appendChild(li);
+									li.className = 'mui-table-view-cell';
+									li.setAttribute('index', cells);
+									li.setAttribute('type', 2);
+									li.setAttribute('startCode', hStart);
+									li.setAttribute('endCode', hEnd);
+									document.querySelectorAll(".communityName")[cells].innerHTML = jiedaoming;
+									document.querySelectorAll(".info")[cells].innerHTML = "开始编号：" + hStart + "结束编号：" + hEnd;
+									document.getElementById("numberInfo").innerHTML = parseInt(document.getElementById("numberInfo").innerText) + parseInt(hEnd) - parseInt(hStart) + 1;
+									document.querySelectorAll(".del")[cells].addEventListener('tap', deleteLi);
+									residentData[cells] = {
+										'commiteeName': jiedaoming,
+										'type': 2,
+										'yuanhao': 0,
+										'louhao': 0,
+										'danyuanhao': 0,
+										'loucengshu': 0,
+										'cenghushu': 0,
+										'startCode': hStart,
+										'endCode': hEnd
+									};
+
+									if(cells == 0) {
+										residentString = JSON.stringify(residentData[cells]);
+										//alert(residentString);
+									} else {
+										residentString += "," + JSON.stringify(residentData[cells]);
+										//alert(residentString);
+									}
+									closeDiv();
+									mask.close();
+									showDiv = false;
+								} else {
+									plus.nativeUI.toast('信息不能相同');
+									closeDiv();
+									mask.close();
+									showDiv = false;
+								}
+							} else {
+								var cells = document.querySelectorAll("li").length;
+								var li = document.createElement('li');
+								li.innerHTML = liStr;
+								ul.appendChild(li);
+								li.className = 'mui-table-view-cell';
+								li.setAttribute('index', cells);
+								li.setAttribute('type', 2);
+								li.setAttribute('startCode', hStart);
+								li.setAttribute('endCode', hEnd);
+								document.querySelectorAll(".communityName")[cells].innerHTML = jiedaoming;
+								document.querySelectorAll(".info")[cells].innerHTML = "开始编号：" + hStart + "结束编号：" + hEnd;
+								document.getElementById("numberInfo").innerHTML = parseInt(document.getElementById("numberInfo").innerText) + parseInt(hEnd) - parseInt(hStart) + 1;
+								document.querySelectorAll(".del")[cells].addEventListener('tap', deleteLi);
+								residentData[cells] = {
+									'commiteeName': jiedaoming,
+									'type': 2,
+									'yuanhao': 0,
+									'louhao': 0,
+									'danyuanhao': 0,
+									'loucengshu': 0,
+									'cenghushu': 0,
+									'startCode': hStart,
+									'endCode': hEnd
+								};
+
+								if(cells == 0) {
+									residentString = JSON.stringify(residentData[cells]);
+									//alert(residentString);
+								} else {
+									residentString += "," + JSON.stringify(residentData[cells]);
+									//alert(residentString);
+								}
+								closeDiv();
+								mask.close();
+								showDiv = false;
+							}
+						} else {
+							plus.nativeUI.toast('信息错误');
+							closeDiv();
+							mask.close();
+							showDiv = false;
+						}
+					}
+
+				});
+				document.getElementById("country-ok").addEventListener('tap', function() {
+					var cunming = document.getElementById("csName").value;
+					var cStart = document.getElementById("csStart").value;
+					var cEnd = document.getElementById("csEnd").value;
+					if(cunming == "" || cStart == "" || cEnd == "") {
+						plus.nativeUI.toast('信息不能为空');
+					} else {
+						if(parseInt(cStart) >= 1 && parseInt(cEnd) >= 1 && parseInt(cStart) < parseInt(cEnd)) {
+							if(residentData.length > 0) {
+								var result3 = true;
+								for(var i = 0; i < residentData.length; i++) {
+									if(residentData[i].commiteeName == cunming) {
+										result3 = false;
+									}
+								}
+								if(result3) {
+									var cells = document.querySelectorAll("li").length;
+									var li = document.createElement('li');
+									li.className = 'mui-table-view-cell';
+									li.innerHTML = liStr;
+									ul.appendChild(li);
+									li.setAttribute('index', cells);
+									li.setAttribute('type', 3);
+									li.setAttribute('startCode', parseInt(cStart));
+									li.setAttribute('endCode', parseInt(cEnd));
+									document.querySelectorAll(".communityName")[cells].innerHTML = cunming;
+									document.querySelectorAll(".info")[cells].innerHTML = "开始编号：" + cStart + "结束编号：" + cEnd;
+									document.getElementById("numberInfo").innerHTML = parseInt(document.getElementById("numberInfo").innerText) + parseInt(cEnd) - parseInt(cStart) + 1;
+									document.querySelectorAll(".del")[cells].addEventListener('tap', deleteLi);
+									residentData[cells] = {
+										'commiteeName': cunming,
+										'type': 3,
+										'yuanhao': 0,
+										'louhao': 0,
+										'danyuanhao': 0,
+										'loucengshu': 0,
+										'cenghushu': 0,
+										'startCode': cStart,
+										'endCode': cEnd
+									};
+									if(cells == 0) {
+										residentString = JSON.stringify(residentData[cells]);
+									} else {
+										residentString += "," + JSON.stringify(residentData[cells]);
+									}
+									closeDiv();
+									mask.close();
+									showDiv = false;
+								} else {
+									plus.nativeUI.toast('信息不能相同');
+									closeDiv();
+									mask.close();
+									showDiv = false;
+								}
+							} else {
+								var cells = document.querySelectorAll("li").length;
+								var li = document.createElement('li');
+								li.className = 'mui-table-view-cell';
+								li.innerHTML = liStr;
+								ul.appendChild(li);
+								li.setAttribute('index', cells);
+								li.setAttribute('type', 3);
+								li.setAttribute('startCode', parseInt(cStart));
+								li.setAttribute('endCode', parseInt(cEnd));
+								document.querySelectorAll(".communityName")[cells].innerHTML = cunming;
+								document.querySelectorAll(".info")[cells].innerHTML = "开始编号：" + cStart + "结束编号：" + cEnd;
+								document.getElementById("numberInfo").innerHTML = parseInt(document.getElementById("numberInfo").innerText) + parseInt(cEnd) - parseInt(cStart) + 1;
+								document.querySelectorAll(".del")[cells].addEventListener('tap', deleteLi);
+								residentData[cells] = {
+									'commiteeName': cunming,
+									'type': 3,
+									'yuanhao': 0,
+									'louhao': 0,
+									'danyuanhao': 0,
+									'loucengshu': 0,
+									'cenghushu': 0,
+									'startCode': cStart,
+									'endCode': cEnd
+								};
+								if(cells == 0) {
+									residentString = JSON.stringify(residentData[cells]);
+								} else {
+									residentString += "," + JSON.stringify(residentData[cells]);
+								}
+								closeDiv();
+								mask.close();
+								showDiv = false;
+							}
+						} else {
+							plus.nativeUI.toast('信息错误');
+							closeDiv();
+							mask.close();
+							showDiv = false;
+						}
+					}
+				});
+				document.getElementById("build-cancel").addEventListener('tap', function() {
+					document.getElementById("build-tip").style.display = "none";
+					mask.close();
+					showDiv = false;
+				});
+				document.getElementById("houseNumber-cancel").addEventListener('tap', function() {
+					document.getElementById("houseNumber-tip").style.display = "none";
+					mask.close();
+					showDiv = false;
+				});
+				document.getElementById("country-cancel").addEventListener('tap', function() {
+					document.getElementById("country-tip").style.display = "none";
+					mask.close();
+					showDiv = false;
+				});
+				document.getElementById("clear-btn").addEventListener('tap', function() {
+					var len = ul.childNodes.length;
+					for(var i = 0; i < len; i++) {
+						ul.removeChild(ul.childNodes[0]);
+					}
+					document.getElementById("numberInfo").innerHTML = 0;
+				});
+
+				document.getElementById("submit-btn").addEventListener('tap', function() {
+					for(var i = 0; i < residentData.length; i++) {
+						if(i == 0) {
+							residentString = JSON.stringify(residentData[i]);
+						} else {
+							residentString += "," + JSON.stringify(residentData[i]);
+						}
+					}
+
+					console.log(residentString);
+					if(parseInt(document.getElementById("numberInfo").innerText) < 40) {
+						plus.nativeUI.toast('请至少录入40个');
+					} else {
+						mui.ajax('http://139.196.196.64:8080/edsm/service/submitResidentInfo', {
+							type: "post",
+							dataType: "json",
+							headers: {
+								token: plus.storage.getItem('token')
+							},
+							data: {
+								taskId: mui.currentWebview.parent().taskId,
+								residentInfo: "[" + residentString + "]"
+							},
+							success: function(data) {
+								if(data.result == 1) {
+									plus.nativeUI.toast(data.msg);
+									mui.openWindow({
+										url: "sample.html",
+										id: "sample",
+										extras: {
+											taskId: mui.currentWebview.parent().taskId
+										},
+										show: {
+											aniShow: "pop-in",
+											duration: 200
+										},
+										waiting: {
+											autoShow: false
+										}
+									});
+								} else {
+									plus.nativeUI.toast(data.msg);
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								console.log(type);
+							}
+
+						});
+					}
+
+				});
+			});
+
+			function closeDiv() {
+				if(document.getElementById("build-tip").style.display == 'block') {
+					document.getElementById("build-tip").style.display = "none";
+				}
+				if(document.getElementById("houseNumber-tip").style.display == 'block') {
+					document.getElementById("houseNumber-tip").style.display = "none";
+				}
+				if(document.getElementById("country-tip").style.display == 'block') {
+					document.getElementById("country-tip").style.display = "none";
+				}
+			}
+
+			function myback() {
+				if(showDiv) {
+					closeDiv();
+					mask.close();
+					showDiv = false;
+					return false;
+				} else {
+					return true;
+				}
+			}
+
+			function addli(num) {
+
+			}
+
+			function deleteLi() {
+				if(this.parentElement.parentElement.getAttribute('type') == 1) {
+					document.getElementById("numberInfo").innerHTML = parseInt(document.getElementById("numberInfo").innerText) - this.parentElement.parentElement.getAttribute('loucengshu') * this.parentElement.parentElement.getAttribute('cenghushu');
+				} else if(this.parentElement.parentElement.getAttribute('type') == 2) {
+					document.getElementById("numberInfo").innerHTML = parseInt(document.getElementById("numberInfo").innerText) - (this.parentElement.parentElement.getAttribute('endCode') - this.parentElement.parentElement.getAttribute('startCode') + 1);
+				} else if(this.parentElement.parentElement.getAttribute('type') == 3) {
+					document.getElementById("numberInfo").innerHTML = parseInt(document.getElementById("numberInfo").innerText) - (this.parentElement.parentElement.getAttribute('endCode') - this.parentElement.parentElement.getAttribute('startCode') + 1);
+				}
+				var indx = this.parentElement.parentElement.getAttribute('index');
+				residentData.splice(indx, 1);
+				ul.removeChild(this.parentElement.parentElement);
+			}
+		</script>
+	</body>
+
+</html>

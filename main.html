@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-bar-nav {
+				background-color: #D63443;
+			}
+			
+			.mui-title {
+				color: #FFFFFF;
+			}
+			
+			.nvbt {
+				float: right;
+				width: 15%;
+				height: 100%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				background: no-repeat center center url(images/person_icon.png);
+				background-size: 38px 38px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<div id="toPerson" class="nvbt"></div>
+			<h1 class="mui-title">经济日报在线调查</h1>
+		</header>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				subpages: [{
+					url: 'main-subpages.html',
+					id: 'main-subpages',
+					styles: {
+						top: topoffset,
+						bottom: '0px',
+						scrollIndicator: 'none'
+					}
+				}]
+			});
+			var targetWebview = null;
+			mui.plusReady(function() {
+				plus.webview.currentWebview().setStyle({
+					scrollIndicator: 'none'
+				});
+				targetWebview = mui.preload({
+					url: 'person.html',
+					id: 'person',
+					styles: {
+						scrollIndicator: 'none',
+						scalable: false,
+						popGesture: 'hide'
+					}
+				});
+				document.getElementById("toPerson").addEventListener('tap', function() {
+					setTimeout(function(){
+						targetWebview.show('pop-in');
+					},50);
+				});
+
+				var backButtonPress = 0;
+				mui.back = function(event) {
+					backButtonPress++;
+					if(backButtonPress > 1) {
+						plus.runtime.quit();
+					} else {
+						plus.nativeUI.toast('再按一次退出应用');
+					}
+					setTimeout(function() {
+						backButtonPress = 0;
+					}, 1000);
+					return false;
+				};
+			});
+		</script>
+	</body>
+
+</html>

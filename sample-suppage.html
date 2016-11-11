@@ -1,0 +1,581 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/qn.css" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-table-view:before,
+			.mui-table-view:after,
+			.mui-table-view-cell:before,
+			.mui-table-view-cell:after {
+				height: 0px;
+			}
+			
+			.mui-table-view-cell {
+				padding: 10px 20px !important;
+			}
+			
+			.mui-table-view-cell.mui-active {
+				background-color: #f4f4f4;
+			}
+			
+			.item-content p {
+				width: 100%;
+				margin-bottom: 10px;
+			}
+			
+			.item-content p:first-child {
+				float: left;
+				padding: 5px 0px;
+			}
+			
+			.residentName {
+				float: left;
+				color: #000000 !important;
+				font-size: 18px !important;
+			}
+			
+			.residentCode,
+			.residentDetail,
+			.codeInfo,
+			.detailInfo {
+				color: #4a4a4a !important;
+				font-size: 18px !important;
+			}
+			
+			.state {
+				float: right;
+				color: #FFFFFF;
+				font-size: 12px !important;
+				padding: 5px;
+				border-radius: 5px;
+			}
+			
+			.state-true {
+				background-color: #F64C4D;
+			}
+			
+			.state-false {
+				background-color: #B5B5B5;
+			}
+			
+			.btn {
+				font-size: 16px !important;
+				padding: 8px 0px !important;
+				background-color: #F54C4C !important;
+				border: 1px solid #F54C4C !important;
+			}
+			
+			.btn-row-1 {
+				float: left;
+				width: 100%;
+			}
+			
+			.complete-btn {
+				width: 45% !important;
+				float: left;
+			}
+			
+			.not-btn {
+				width: 45% !important;
+				float: right;
+				opacity: 0.6;
+			}
+			
+			.btn:active,
+			.card-btn:active {
+				background-color: #D63443 !important;
+				border: 1px solid #D63443 !important;
+			}
+			
+			.btn-row-2 {
+				display: none;
+			}
+			
+			.reset-btn {
+				width: 100% !important;
+			}
+			
+			#complete-tip,
+			#reset-tip {
+				display: none;
+				top: 30% !important;
+			}
+			
+			#not-tip {
+				display: none;
+				top: 20% !important;
+			}
+			
+			.mui-card {
+				width: 65%;
+				z-index: 999;
+				position: fixed;
+				left: 15% !important;
+			}
+			
+			.mui-card-header {
+				background-color: #D63443;
+				padding: 0px !important;
+				margin-top: 0px !important;
+				margin-bottom: 0px !important;
+			}
+			
+			.mui-card-header span {
+				margin: 0px auto;
+				color: #FFFFFF;
+				font-size: 16px;
+			}
+			
+			.mui-card-content {
+				padding: 15px;
+			}
+			
+			.mui-card-content p {
+				font-size: 16px;
+				color: #000000;
+				margin: 15px;
+			}
+			
+			.mui-card-footer {
+				padding: 5px;
+				margin: 0px !important;
+				background-color: #F4F4F4;
+			}
+			
+			.mui-card-footer .mui-button-row {
+				width: 100%;
+				padding: 0px;
+				float: left;
+			}
+			
+			.card-btn {
+				padding: 5px 10px;
+				font-size: 16px !important;
+				margin: 0px 10px;
+				background-color: #F54C4C !important;
+				border: 1px solid #F54C4C !important;
+			}
+			
+			.btn-ok {
+				width: 35%;
+				float: left;
+			}
+			
+			.btn-cancel {
+				width: 35%;
+				float: right;
+			}
+			
+			.mui-input-row {
+				margin-bottom: 10px;
+			}
+			
+			.mui-input-row:last-child {
+				margin-bottom: 0px;
+			}
+			
+			.mui-radio {
+				padding-top: 5px;
+				height: 30px;
+			}
+			
+			.mui-radio label {
+				display: inline !important;
+			}
+			
+			.mui-backdrop {
+				background-color: rgba(0, 0, 0, 0.6);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="complete-tip" class="mui-card">
+			<div class="mui-card-header">
+				<span id="tip-span">提示信息</span>
+			</div>
+			<div id="tip-content" class="mui-card-content">
+				<p>确认已经完成？</p>
+			</div>
+			<div class="mui-card-footer">
+				<div class="mui-button-row">
+					<button id="complete-ok" type="button" class="mui-btn mui-btn-red card-btn btn-ok">确定</button>
+					<button id="complete-cancel" type="button" class="mui-btn mui-btn-red card-btn btn-cancel">取消</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="not-tip" class="mui-card">
+			<div class="mui-card-header">
+				<span id="tip-span">请选择未完成的原因</span>
+			</div>
+			<div id="tip-content" class="mui-card-content">
+				<div class="mui-input-row mui-radio mui-left"><label>未联系上</label><input name="radio" type="radio" value="2" checked="checked"></div>
+				<div class="mui-input-row mui-radio mui-left"><label>被拒绝</label><input name="radio" type="radio" value="3"></div>
+				<div class="mui-input-row mui-radio mui-left"><label>无此住户</label><input name="radio" type="radio" value="4"></div>
+			</div>
+			<div class="mui-card-footer">
+				<div class="mui-button-row">
+					<button id="not-ok" type="button" class="mui-btn mui-btn-red card-btn btn-ok">确定</button>
+					<button id="not-cancel" type="button" class="mui-btn mui-btn-red card-btn btn-cancel">取消</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="reset-tip" class="mui-card">
+			<div class="mui-card-header">
+				<span id="tip-span">提示信息</span>
+			</div>
+			<div id="tip-content" class="mui-card-content">
+				<p>确认重新申请样本？</p>
+			</div>
+			<div class="mui-card-footer">
+				<div class="mui-button-row">
+					<button id="reset-ok" type="button" class="mui-btn mui-btn-red card-btn btn-ok">确定</button>
+					<button id="reset-cancel" type="button" class="mui-btn mui-btn-red card-btn btn-cancel">取消</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view">
+				</ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: "#refreshContainer",
+					down: {
+						height: 50,
+						auto: false,
+						contentdown: "下拉可以刷新",
+						contentover: "释放立即刷新",
+						contentrefresh: "正在刷新...",
+						callback: pulldownRefresh
+					},
+					up: {
+						height: 50,
+						auto: true,
+						contentrefresh: "正在加载...",
+						contentnomore: "没有更多数据了",
+						callback: pullupRefresh
+					}
+				},
+				beforeback: myback
+			});
+			var ul = null;
+			var countUp = 1;
+			var countDown = 1;
+			var str = '<div class="item-content"><p><span class="residentName"></span><span class="state"></span></p><p><span class="codeInfo">住户编码：</span><span class="residentCode"></span></p><p><span class="detailInfo">住户信息：</span><span class="residentDetail"></span></p></div><div class="mui-button-row btn-row-1"><button type="button" class="mui-btn mui-btn-red mui-btn-block btn complete-btn">完成</button><button type="button" class="mui-btn mui-btn-red mui-btn-block btn not-btn">未完成</button></div><div class="mui-button-row btn-row-2"><button type="button" class="mui-btn mui-btn-red mui-btn-block btn reset-btn">重新申请样本</button></div>';
+			var showDiv = false;
+			var mask = mui.createMask(closeDiv);
+			var rc = 0;
+			var btn = null;
+			var sampleId = null;
+			mui.plusReady(function() {
+				ul = document.querySelector("ul");
+				document.getElementById("complete-ok").addEventListener('tap', function() {
+					stateBtn(btn, sampleId, 1);
+					_close();
+				});
+				document.getElementById("complete-cancel").addEventListener('tap', _close);
+				document.getElementById("not-ok").addEventListener('tap', function() {
+					var radios = document.getElementsByName("radio");
+					var num = null;
+					for(var i = 0; i < radios.length; i++) {
+						if(radios[i].checked) {
+							num = radios[i].value;
+							break;
+						}
+					}
+					stateBtn(btn, sampleId, num);
+					_close();
+				});
+				document.getElementById("not-cancel").addEventListener('tap', _close);
+				document.getElementById("reset-ok").addEventListener('tap', function() {
+					resetSample(btn, sampleId);
+					_close();
+				});
+				document.getElementById("reset-cancel").addEventListener('tap', _close);
+			});
+
+			function pulldownRefresh() {
+				setTimeout(function() {
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+				}, 1500);
+			}
+
+			function pullupRefresh() {
+				mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+				mui.ajax("http://139.196.196.64:8080/edsm/service/getSampleList?pageSize=10&page=" + countUp + "&taskId=" + mui.currentWebview.parent().taskId, {
+					type: "get",
+					dataType: "json",
+					headers: {
+						token: plus.storage.getItem('token')
+					},
+					success: function(data) {
+						if(data.result == 1) {
+							initData(data);
+							if(data.sampleList.length < 10) {
+								mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+							} else {
+								mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+								countUp++;
+							}
+						} else {
+							plus.nativeUI.toast(data.msg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast(type);
+					}
+				});
+			}
+
+			function initData(data) {
+				var len = data.sampleList.length;
+				var cells = document.querySelectorAll('.mui-table-view-cell').length;
+				for(var i = 0; i < len; i++) {
+					var li = document.createElement('li');
+					li.className = 'mui-table-view-cell';
+					li.innerHTML = str;
+					li.setAttribute('indx', i + cells);
+					li.setAttribute('rc', data.sampleList[i].repeatCount);
+					li.setAttribute('isResample', data.sampleList[i].isResample);
+					li.sampleId = data.sampleList[i].sampleId;
+					ul.appendChild(li);
+					document.querySelectorAll('.residentName')[i + cells].innerHTML = (i + cells + 1) + "." + data.sampleList[i].residentName;
+					document.querySelectorAll('.residentCode')[i + cells].innerHTML = data.sampleList[i].residentCode;
+					document.querySelectorAll('.residentDetail')[i + cells].innerHTML = data.sampleList[i].residentDetail;
+					switch(data.sampleList[i].state) {
+						case 1:
+							document.querySelectorAll(".state")[i + cells].innerHTML = "已完成";
+							document.querySelectorAll(".state")[i + cells].className += " state-true";
+							document.querySelectorAll(".btn-row-1")[i + cells].style.display = "none"
+							break;
+						case 2:
+							document.querySelectorAll(".state")[i + cells].innerHTML = "未联系上" + data.sampleList[i].repeatCount + "次";
+							document.querySelectorAll(".state")[i + cells].className += " state-false";
+							if(data.sampleList[i].repeatCount == 3) {
+								if(data.sampleList[i].isResample == 1) {
+									document.querySelectorAll(".btn-row-1")[i + cells].style.display = "none";
+									document.querySelectorAll(".btn-row-2")[i + cells].style.display = "none";
+								} else {
+									document.querySelectorAll(".btn-row-1")[i + cells].style.display = "none";
+									document.querySelectorAll(".btn-row-2")[i + cells].style.display = "block";
+								}
+							}
+							break;
+						case 3:
+							document.querySelectorAll(".state")[i + cells].innerHTML = "被拒绝";
+							document.querySelectorAll(".state")[i + cells].className += " state-false";
+							if(data.sampleList[i].isResample == 1) {
+								document.querySelectorAll(".btn-row-1")[i + cells].style.display = "none";
+								document.querySelectorAll(".btn-row-2")[i + cells].style.display = "none";
+							} else {
+								document.querySelectorAll(".btn-row-1")[i + cells].style.display = "none";
+								document.querySelectorAll(".btn-row-2")[i + cells].style.display = "block";
+							}
+							break;
+						case 4:
+							document.querySelectorAll(".state")[i + cells].innerHTML = "无此住户";
+							document.querySelectorAll(".state")[i + cells].className += " state-false";
+							if(data.sampleList[i].isResample == 1) {
+								document.querySelectorAll(".btn-row-1")[i + cells].style.display = "none";
+								document.querySelectorAll(".btn-row-2")[i + cells].style.display = "none";
+							} else {
+								document.querySelectorAll(".btn-row-1")[i + cells].style.display = "none";
+								document.querySelectorAll(".btn-row-2")[i + cells].style.display = "block";
+							}
+							break;
+					}
+
+					document.querySelectorAll(".complete-btn")[i + cells].addEventListener('tap', function() {
+						_open();
+						var self = this;
+						btn = self;
+						sampleId = self.parentElement.parentElement.sampleId;
+						document.getElementById("complete-tip").style.display = "block";
+					});
+
+					document.querySelectorAll(".not-btn")[i + cells].addEventListener('tap', function() {
+						_open();
+						var self = this;
+						btn = self;
+						sampleId = self.parentElement.parentElement.sampleId;
+						document.getElementById("not-tip").style.display = "block";
+					});
+
+					document.querySelectorAll(".reset-btn")[i + cells].addEventListener('tap', function() {
+						_open();
+						var self = this;
+						btn = self;
+						sampleId = self.parentElement.parentElement.sampleId;
+						document.getElementById("reset-tip").style.display = 'block';
+					});
+				}
+			}
+
+			function stateBtn(btn, sampleId, state) {
+				mui.ajax("http://139.196.196.64:8080/edsm/service/updateSample?sampleId=" + sampleId + "&taskId=" + mui.currentWebview.parent().taskId + "&state=" + state, {
+					type: "get",
+					dataType: "json",
+					headers: {
+						token: plus.storage.getItem('token')
+					},
+					success: function(data) {
+						if(data.result == 1) {
+							//plus.nativeUI.toast(data.msg);
+							var indx = btn.parentElement.parentElement.getAttribute('indx');
+							if(rc == 0) {
+								rc = btn.parentElement.parentElement.getAttribute('rc');
+							}
+							if(state == 1) {
+								document.querySelectorAll(".state")[indx].innerHTML = "已完成";
+								document.querySelectorAll(".state")[indx].className += " state-true";
+								document.querySelectorAll(".btn-row-1")[indx].style.display = "none"
+							} else if(state == 2) {
+								rc++;
+								if(rc == 1) {
+									document.querySelectorAll(".state")[indx].className += " state-false";
+								}
+								document.querySelectorAll(".state")[indx].innerHTML = "未联系上" + rc + "次";
+								if(rc == 3) {
+									if(btn.parentElement.parentElement.getAttribute('isResample') == 1) {
+										document.querySelectorAll(".btn-row-1")[indx].style.display = "none";
+										document.querySelectorAll(".btn-row-2")[indx].style.display = "none";
+									} else {
+										document.querySelectorAll(".btn-row-1")[indx].style.display = "none";
+										document.querySelectorAll(".btn-row-2")[indx].style.display = "block";
+									}
+								}
+							} else if(state == 3) {
+								document.querySelectorAll(".state")[indx].innerHTML = "被拒绝";
+								document.querySelectorAll(".state")[indx].className += " state-false";
+								if(btn.parentElement.parentElement.getAttribute('isResample') == 1) {
+									document.querySelectorAll(".btn-row-1")[indx].style.display = "none";
+									document.querySelectorAll(".btn-row-2")[indx].style.display = "none";
+								} else {
+									document.querySelectorAll(".btn-row-1")[indx].style.display = "none";
+									document.querySelectorAll(".btn-row-2")[indx].style.display = "block";
+								}
+							} else if(state == 4) {
+								document.querySelectorAll(".state")[indx].innerHTML = "无此住户";
+								document.querySelectorAll(".state")[indx].className += " state-false";
+								if(btn.parentElement.parentElement.getAttribute('isResample') == 1) {
+									document.querySelectorAll(".btn-row-1")[indx].style.display = "none";
+									document.querySelectorAll(".btn-row-2")[indx].style.display = "none";
+								} else {
+									document.querySelectorAll(".btn-row-1")[indx].style.display = "none";
+									document.querySelectorAll(".btn-row-2")[indx].style.display = "block";
+								}
+							}
+						} else {
+							plus.nativeUI.toast(data.msg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast(type);
+					}
+				});
+			}
+
+			function resetSample(btn, sampleId) {
+				var indx = btn.parentElement.parentElement.getAttribute('indx');
+				mui.ajax("http://139.196.196.64:8080/edsm/service/getNewSample?sampleId=" + sampleId + "&taskId=" + mui.currentWebview.parent().taskId, {
+					type: "get",
+					dataType: "json",
+					headers: {
+						token: plus.storage.getItem('token')
+					},
+					success: function(data) {
+						if(data.result == 1) {
+							//plus.nativeUI.toast(data.msg);
+							document.querySelectorAll(".btn-row-1")[indx].style.display = "none";
+							document.querySelectorAll(".btn-row-2")[indx].style.display = "none";
+							mui('#refreshContainer').pullRefresh().refresh(true);
+							mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+							var cls = document.querySelectorAll('.mui-table-view-cell').length;
+							mui('#refreshContainer').pullRefresh().pullupLoading(function() {
+								mui.ajax("http://139.196.196.64:8080/edsm/service/getSampleList?pageSize=1&page=" + (cls + 1) + "&taskId=" + mui.currentWebview.parent().taskId, {
+									type: "get",
+									dataType: "json",
+									headers: {
+										token: plus.storage.getItem('token')
+									},
+									success: function(data) {
+										if(data.result == 1) {
+											initData(data);
+											mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+										} else {
+											plus.nativeUI.toast(data.msg);
+										}
+									},
+									error: function(xhr, type, errorThrown) {
+										plus.nativeUI.toast(type);
+									}
+								});
+							});
+						} else {
+							plus.nativeUI.toast(data.msg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast(type);
+					}
+				});
+			}
+
+			function _open() {
+				mask.show();
+				showDiv = true;
+			}
+
+			function _close() {
+				closeDiv();
+				mask.close();
+				showDiv = false;
+				btn = null;
+				sampleId = null;
+			}
+
+			function closeDiv() {
+				if(document.getElementById("complete-tip").style.display == 'block') {
+					document.getElementById("complete-tip").style.display = 'none';
+				}
+				if(document.getElementById("not-tip").style.display == 'block') {
+					document.getElementById("not-tip").style.display = 'none';
+				}
+				if(document.getElementById("reset-tip").style.display == 'block') {
+					document.getElementById("reset-tip").style.display = 'none';
+				}
+
+			}
+
+			function myback() {
+				if(showDiv) {
+					closeDiv();
+					mask.close();
+					showDiv = false;
+					return false;
+				} else {
+					return true;
+				}
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-bar-nav {
+				background-color: #D63443;
+			}
+			
+			.mui-title {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav:active {
+				color: #FFFFFF;
+			}
+			
+			.bg {
+				padding: 6% 0px 8%;
+				text-align: center;
+				background: no-repeat center center url(images/person_bg.png);
+				background-size: 100% 100%;
+			}
+			
+			.bg img {
+				width: 93px;
+				height: 93px;
+			}
+			
+			#userName,
+			#realName {
+				color: #FFFFFF;
+				display: block;
+			}
+			
+			#userName {
+				font-size: 18px;
+			}
+			
+			#realName {
+				margin-top: 5px;
+				font-size: 20px;
+			}
+			
+			.mui-table-view-cell:after {
+				left: 0px;
+			}
+			
+			.mui-table-view-cell {
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+			
+			.mui-table-view-cell div {
+				padding: 5px;
+			}
+			
+			.mui-table-view-cell div img {
+				margin-top: 5px;
+			}
+			
+			.mui-navigate-right img:first-child {
+				width: 19px;
+				height: 20px;
+			}
+			
+			.mui-navigate-right img:last-child {
+				width: 20px;
+				height: 22px;
+			}
+			
+			.mui-media-body {
+				color: #7f7f7f;
+				font-size: 18px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">个人中心</h1>
+		</header>
+		<div id="content" class="mui-content">
+			<div class="bg">
+				<img src="images/person_default_photo.png" />
+				<div>
+					<span id="userName"></span>
+					<span id="realName"></span>
+				</div>
+			</div>
+			<ul class="mui-table-view">
+				<li id="toUpdate" class="mui-table-view-cell mui-media">
+					<div class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="images/login_locked_icon.png" />
+						<div class="mui-media-body">
+							修改密码
+						</div>
+					</div>
+				</li>
+				<li id="toLogout" class="mui-table-view-cell mui-media">
+					<div class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="images/person_quit_icon.png" />
+						<div class="mui-media-body">
+							注销
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				document.getElementById("userName").innerHTML = plus.storage.getItem('userName');
+				document.getElementById("realName").innerHTML = plus.storage.getItem('realName');
+				document.getElementById("toUpdate").addEventListener('tap', function() {
+					var targetWebview = plus.webview.create('update.html', 'update', {
+						scrollIndicator: 'none',
+						scalable: false
+					});
+
+					targetWebview.addEventListener('loaded', function() {
+						setTimeout(function() {
+							targetWebview.show('pop-in');
+						}, 50);
+					}, false);
+				});
+
+				document.getElementById("toLogout").addEventListener('tap', function() {
+					mui.confirm("确认注销吗？", "提示信息", ["确认", "取消"], function(event) {
+						if(event.index == 0) {
+							mui.ajax('http://139.196.196.64:8080/edsm/service/logout', {
+								type: "get",
+								dataType: "json",
+								headers: {
+									token: plus.storage.getItem("token")
+								},
+								success: function(data) {
+									if(data.result == 1) {
+										plus.nativeUI.toast(data.msg);
+										plus.storage.removeItem('token');
+										mui.openWindow({
+											url: 'login.html',
+											id: 'login',
+											waiting: {
+												autoShow: false
+											},
+											show: {
+												aniShow: true
+											}
+										});
+										setTimeout(function(){
+											plus.webview.getWebviewById('main').close('none');
+											plus.webview.getWebviewById('main-subpages').close('none');
+											plus.webview.currentWebview().close('none');
+										},50);
+									} else {
+										plus.nativeUI.toast(data.msg);
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									plus.nativeUI.toast(type);
+								}
+							});
+						}
+					});
+
+				});
+				mui.back = function() {
+					plus.webview.currentWebview().hide('pop-out');
+				};
+			});
+		</script>
+	</body>
+
+</html>

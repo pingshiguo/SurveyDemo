@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-bar-nav {
+				background-color: #D63443;
+			}
+			
+			.mui-title {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav:active {
+				color: #FFFFFF;
+			}
+			
+			.tips {
+				margin: 20px 20px;
+			}
+			
+			.tips p {
+				color: #999999;
+				margin-bottom: 0px;
+			}
+			
+			.photo-content {
+				margin: 0px 20px;
+				text-align: center;
+			}
+			
+			#photo {
+				width: 50%;
+				height: 50%;
+				background-color: #e5e4e4;
+				border-radius: 5px;
+			}
+			
+			.mui-button-row {
+				margin: 20px 20px;
+				padding: 0px;
+			}
+			
+			.btn {
+				padding: 8px 0px;
+				background-color: #F54C4C;
+				color: #FFFFFF;
+				border-radius: 25px;
+				border: 1px solid #F54C4C;
+				margin-bottom: 0px;
+			}
+			
+			.btn:active {
+				background-color: #D63443 !important;
+				border: 1px solid #D63443 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">拍照留影</h1>
+		</header>
+		<div id="content" class="mui-content">
+			<div class="mui-content-padded">
+				<div class="tips">
+					<p>预览</p>
+				</div>
+				<div class="photo-content">
+					<img id="photo" src="images/default_icon.png" />
+				</div>
+				<div class="mui-button-row">
+					<button id="photograph-btn" class="mui-btn mui-btn-red mui-btn-block btn">拍照</button>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var img = null;
+			mui.plusReady(function() {
+				img = document.getElementById("photo");
+				plus.storage.setItem('imgState1', 'true');
+				document.getElementById('photograph-btn').addEventListener('tap', function() {
+					var cmr = plus.camera.getCamera();
+					cmr.captureImage(function(path) {
+						plus.io.resolveLocalFileSystemURL(path, function(entry) {
+							img.src = entry.toLocalURL();
+							plus.nativeUI.toast(entry.toLocalURL());
+							mui.fire(plus.webview.getWebviewById('write'), 'getheyingURL', {
+								heyingURL: entry.toLocalURL()
+							});
+						}, errorCB);
+					}, errorCB, {
+						filename: "_doc/heying/"
+					});
+				});
+			});
+
+			function errorCB(e) {
+				plus.nativeUI.toast("Audio record failed: " + e.message);
+			}
+		</script>
+	</body>
+
+</html>

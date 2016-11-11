@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-table-view:before,
+			.mui-table-view:after,
+			.mui-table-view-cell:before,
+			.mui-table-view-cell:after {
+				height: 0px;
+			}
+			
+			.item div:first-child {
+				padding: 5px 5px 0px;
+			}
+			
+			.item div:last-child {
+				float: left;
+				padding: 5px;
+				width: 100%;
+			}
+			
+			.surveyName {
+				font-size: 18px;
+				color: #000000;
+			}
+			
+			.startTime,
+			.endTime {
+				font-size: 14px;
+				color: #333;
+			}
+			
+			.time-div {
+				margin: 0px 5px 5px;
+				border-bottom: 1px solid;
+				border-bottom-color: #c8c7cc;
+			}
+			
+			.surveyImg {
+				float: left;
+				width: 95px;
+				height: 85px;
+				margin-right: 10px;
+			}
+			
+			.surveyDes {
+				-webkit-line-clamp: 4;
+				color: #4a4a4a;
+				font-size: 16px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view"></ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#refreshContainer',
+					down: {
+						height: 50,
+						auto: false,
+						contentdown: "下拉可以刷新",
+						contentover: "释放立即刷新",
+						contentrefresh: "正在刷新...",
+						callback: pulldownRefresh
+					},
+					up: {
+						height: 50,
+						auto: true,
+						contentrefresh: "正在加载...",
+						contentnomore: "没有更多数据了",
+						callback: pullupRefresh
+					}
+				}
+			});
+			var ul = document.querySelector('ul');
+			var str = "<div class='item'><div><span class='surveyName'></span></div><div class='time-div'><span class='startTime'></span><span class='endTime'></span></div><div><img class='surveyImg' /><span class='mui-ellipsis-2 surveyDes'></span></div></div>";
+			var countUp = 1;
+			var targetWebview = null;
+			mui.plusReady(function() {
+				targetWebview = mui.preload({
+					url: 'survey.html',
+					id: 'survey',
+					styles: {
+						scrollIndicator: 'none',
+						scalable: false
+					}
+				});
+			});
+
+			function pulldownRefresh() {
+				setTimeout(function() {
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+				}, 1500);
+			}
+
+			function pullupRefresh() {
+				mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+				mui.ajax("http://139.196.196.64:8080/edsm/service/getSurveyList?pageSize=10&page=" + countUp, {
+					type: "get",
+					dataType: "json",
+					timeout: 5000,
+					headers: {
+						token: plus.storage.getItem('token')
+					},
+					success: function(data) {
+						if(data.result == 1) {
+							initData(data);
+						} else {
+							plus.nativeUI.toast(data.msg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast(type);
+						if(type == 'timeout') {
+							setTimeout(pullupRefresh, 500);
+						}
+					},
+				});
+			}
+
+			function initData(data) {
+				var len = data.surveyList.length;
+				var cells = document.querySelectorAll(".mui-table-view-cell").length;
+				for(var i = 0; i < len; i++) {
+					var li = document.createElement("li");
+					li.className = "mui-table-view-cell";
+					li.setAttribute('surveyId', data.surveyList[i].surveyId);
+					li.setAttribute('surveyName', data.surveyList[i].surveyName);
+					li.setAttribute('surveyDes', data.surveyList[i].surveyDes)
+					li.innerHTML = str;
+					ul.appendChild(li);
+					document.querySelectorAll(".surveyName")[i + cells].innerHTML = data.surveyList[i].surveyName;
+					document.querySelectorAll(".startTime")[i + cells].innerHTML = "时间：" + data.surveyList[i].startTime;
+					document.querySelectorAll(".endTime")[i + cells].innerHTML = "至" + data.surveyList[i].endTime;
+					document.querySelectorAll(".surveyImg")[i + cells].src = data.surveyList[i].imgUrl;
+					document.querySelectorAll(".surveyDes")[i + cells].innerHTML = data.surveyList[i].surveyDes;
+					document.querySelectorAll(".mui-table-view .mui-table-view-cell")[i + cells].addEventListener('tap',function(){
+					var self = this;
+					mui.fire(targetWebview, 'update', {
+						surveyId: self.getAttribute('surveyId'),
+						surveyName: self.getAttribute('surveyName'),
+						surveyDes: self.getAttribute('surveyDes')
+					});
+					setTimeout(function() {
+						targetWebview.show('pop-in');
+					}, 150);
+				});
+				}
+				if(len < 10) {
+					mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+				} else {
+					mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+					countUp++;
+				}
+			}
+		</script>
+	</body>
+
+</html>

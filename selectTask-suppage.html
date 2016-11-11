@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-table-view:before,
+			.mui-table-view:after,
+			.mui-table-view-cell:before,
+			.mui-table-view-cell:after {
+				height: 0px;
+			}
+			
+			.mui-table-view-cell {
+				background-color: #FFFFFF;
+				padding: 10px !important;
+			}
+			
+			.mui-table-view-cell.mui-active {
+				background-color: #F4F4F4;
+			}
+			
+			.item-content {
+				float: left;
+				width: 100%;
+				padding: 10px !important;
+			}
+			
+			.item-content p {
+				margin-bottom: 10px;
+			}
+			
+			.item-content p span {
+				color: #000000;
+				font-size: 16px;
+			}
+			
+			.committee,
+			.address {
+				color: #4a4a4a !important;
+				font-size: 16px;
+			}
+			
+			.isSampled {
+				font-size: 16px;
+				color: #D8495A;
+				float: right;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view">
+				</ul>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: "#refreshContainer",
+					down: {
+						height: 50,
+						auto: false,
+						contentdown: "下拉可以刷新",
+						contentover: "释放立即刷新",
+						contentrefresh: "正在刷新...",
+						callback: pulldownRefresh
+					},
+					up: {
+						height: 50,
+						auto: true,
+						contentrefresh: "正在加载...",
+						contentnomore: "没有更多数据了",
+						callback: pullupRefresh
+					}
+				}
+			});
+
+			var str = '<div class="item-content item3"><p><span>名称：</span><span class="committee"></span></p><p><span>地址：</span><span class="address"></span></p><div><span class="isSampled"></span></div></div>';
+			var ul = null;
+			var countUp = 1,
+				countDown = 1;
+			var targetWebview = null;
+			mui.plusReady(function() {
+				ul = document.querySelector(".mui-table-view");
+				
+			});
+
+			function pulldownRefresh() {
+				setTimeout(function() {
+					mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+				}, 1500);
+			}
+
+			function pullupRefresh() {
+				mui.ajax("http://139.196.196.64:8080/edsm/service/getUserTaskList?pageSize=10&page=" + countUp + "&surveyId=" + mui.currentWebview.parent().surveyId + "&isSampled=" + 1, {
+					type: "get",
+					dataType: "json",
+					headers: {
+						token: plus.storage.getItem('token')
+					},
+					success: function(data) {
+						if(data.result == 1) {
+							var len = data.taskList.length;
+							var cells = document.querySelectorAll(".mui-table-view-cell").length;
+							for(var i = 0; i < len; i++) {
+								var li = document.createElement('li');
+								li.className = 'mui-table-view-cell';
+								li.setAttribute('taskId', data.taskList[i].taskId);
+								li.setAttribute('committee', data.taskList[i].committee);
+								li.innerHTML = str;
+								ul.appendChild(li);
+								document.querySelectorAll(".committee")[i + cells].innerHTML = data.taskList[i].committee;
+								if(data.taskList[i].province == data.taskList[i].city) {
+									document.querySelectorAll(".address")[i + cells].innerHTML = data.taskList[i].province + data.taskList[i].district + data.taskList[i].street;
+								} else {
+									document.querySelectorAll(".address")[i + cells].innerHTML = data.taskList[i].province + data.taskList[i].city + data.taskList[i].district + data.taskList[i].street;
+								}
+								document.querySelectorAll(".isSampled")[i + cells].innerHTML = "查看样本&nbsp;&nbsp;>";
+								document.querySelectorAll(".mui-table-view .mui-table-view-cell")[i + cells].addEventListener('tap', function() {
+									var self = this;
+									targetWebview = plus.webview.create('selectSample.html', 'selectSample', {
+										scrollIndicator: 'none',
+										scalable: false
+									}, {
+										taskId: self.getAttribute('taskId')
+									});
+
+									targetWebview.addEventListener('loaded', function() {
+										setTimeout(function(){
+											targetWebview.show('pop-in');
+										},50);
+									}, false);
+									//var taskId = this.getAttribute('taskId');
+									//var committee = this.getAttribute('committee');
+								});
+							}
+							if(len < 10) {
+								mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+								mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+							} else {
+								mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+								countUp++;
+							}
+						} else {
+							plus.nativeUI.toast(data.msg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						plus.nativeUI.toast(type);
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

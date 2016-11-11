@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			.mui-content {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-bar-nav {
+				background-color: #D63443;
+			}
+			
+			.mui-title {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav {
+				color: #FFFFFF;
+			}
+			
+			.mui-icon-left-nav:active {
+				color: #FFFFFF;
+			}
+			
+			.mui-input-group:before,
+			.mui-input-group:after,
+			.mui-input-row:after {
+				height: 0px !important;
+			}
+			
+			.mui-input-group {
+				margin-top: 50px;
+			}
+			
+			.mui-input-row {
+				margin: 20px 20px;
+				background-color: #FFFFFF;
+				border: 1px solid #EEEEEE;
+				border-radius: 25px;
+			}
+			
+			.mui-input-row label {
+				width: 20% !important;
+			}
+			
+			.mui-input-row label~input {
+				width: 80% !important;
+			}
+			
+			.mui-input-row label img {
+				width: 15px;
+				height: 15px;
+			}
+			
+			.mui-button-row {
+				margin: 25px 20px;
+			}
+			
+			.btn {
+				padding: 8px 0px;
+				background-color: #F54C4C;
+				color: #FFFFFF;
+				border-radius: 25px;
+				border: 1px solid #F54C4C;
+			}
+			
+			.btn:active {
+				background-color: #D63443 !important;
+				border: 1px solid #D63443 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">修改密码</h1>
+		</header>
+		<div id="content" class="mui-content">
+			<div class="mui-content-padded">
+				<div class="mui-input-group">
+					<div class="mui-input-row">
+						<label><img src="images/login_locked_icon.png"/></label>
+						<input id="oldP" type="password" placeholder="原密码">
+					</div>
+					<div class="mui-input-row">
+						<label><img src="images/login_locked_icon.png"/></label>
+						<input id="newP1" type="password" placeholder="新密码">
+					</div>
+					<div class="mui-input-row">
+						<label><img src="images/login_locked_icon.png"/></label>
+						<input id="newP2" type="password" placeholder="确认密码">
+					</div>
+					<div class="mui-button-row">
+						<button id="update-btn" type="button" class="mui-btn mui-btn-red mui-btn-block btn">登录</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/immersed.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				document.getElementById('update-btn').addEventListener('tap', function() {
+					plus.nativeUI.showWaiting("正在提交中，请稍后");
+					var oldP = document.getElementById("oldP").value;
+					var newP1 = document.getElementById("newP1").value;
+					var newP2 = document.getElementById("newP2").value;
+					if(newP1 == newP2) {
+						mui.ajax('http://139.196.196.64:8080/edsm/service/modifyPassword?oldPassword=' + oldP + "&newPassword=" + newP1, {
+							type: "get",
+							dataType: "json",
+							headers: {
+								token: plus.storage.getItem("token")
+							},
+							success: function(data) {
+								if(data.result == 1) {
+									plus.nativeUI.closeWaiting();
+									plus.nativeUI.toast(data.msg);
+									mui.back();
+								} else if(data.result == -1) {
+									plus.nativeUI.closeWaiting();
+									plus.nativeUI.toast("用户名和密码不能为空");
+								} else {
+									plus.nativeUI.closeWaiting();
+									plus.nativeUI.toast(data.msg);
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								plus.nativeUI.closeWaiting();
+								plus.nativeUI.toast(type);
+							}
+						});
+					} else {
+						plus.nativeUI.toast("密码不一致");
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>
